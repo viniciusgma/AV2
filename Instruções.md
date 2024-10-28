@@ -14,14 +14,14 @@ Cada grupo terá um líder indicado pelo professor.
 
 ### Escolha do Projeto:
 Cada grupo deve escolher um projeto entre as opções disponíveis no repositório do Mesa:
-ACO TSP
-Bank Reserves
-Boltzmann Wealth Model Network
-Conway's Game of Life Fast
-El Farol
-Forest Fire
-Hotelling Law
-Geo SIR
+* ACO TSP
+* Bank Reserves
+* Boltzmann Wealth Model Network
+* Conway's Game of Life Fast
+* El Farol
+* Forest Fire
+* Hotelling Law
+* Geo SIR
 ### Implementação:
 O líder do grupo deverá criar um repositório no GitHub e convidar todos os membros do grupo e os professores como colaboradores.
 No repositório, deve estar o código do exemplo escolhido, modificado pelo grupo.
