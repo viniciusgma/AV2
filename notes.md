@@ -4,8 +4,6 @@ Repositório para a realização do projeto avaliativo de Programação 2.
 
 Para qualquer dúvida, entre em contato comigo:
 
-**WhatsApp:** +55 55 ********
-
 ## Instruções e Informações Iniciais
 links:
 https://docs.github.com/en/github-cli/github-cli/quickstart
