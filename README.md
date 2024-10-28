@@ -68,7 +68,7 @@ Comandos básicos do Git:
 
 
 #### Criar
-*criar repositório e começar a rastrear alterações de arquivos.
+##### criar repositório e começar a rastrear alterações de arquivos.
   * git init
 
 ##### Faz o download de um repositório a partir da URL especificada.
