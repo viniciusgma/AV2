@@ -37,9 +37,9 @@ conda install gh --channel conda-forge
 ```bash
 gh auth login [flags]
 ```
-| In the command line, enter gh auth login, then follow the prompts.
-  When prompted for your preferred protocol for Git operations, select HTTPS.
-  When asked if you would like to authenticate to Git with your GitHub credentials, enter Y.
+> In the command line, enter gh auth login, then follow the prompts.
+    When prompted for your preferred protocol for Git operations, select HTTPS.
+     When asked if you would like to authenticate to Git with your GitHub credentials, enter Y.
 
 Configure o Git para usar o GitHub CLI como o helper de credenciais:
 
