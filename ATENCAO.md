@@ -8,7 +8,7 @@ Assim, depois de criar e acessar a pasta em que deseja clonar o projeto:
 
 No Windows:
 
-`venv\Scripts\Activate.sp1`
+`nome_ambiente\Scripts\Activate.sp1`
 
 Você pode testar se ativou o ambiente.
 
