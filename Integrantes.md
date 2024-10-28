@@ -1,4 +1,4 @@
-| Integrantes  |              |              |              |
+| Integrantes  |  Extensões    |Documentação |  Apresentação|
 |--------------|--------------|--------------|--------------|
 | Integrante 1 |              |              |              |
 | Integrante 2 |              |              |              |
