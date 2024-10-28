@@ -8,6 +8,7 @@ whatsapp: 55 55 984020506.
 
 ## Instruções e Informações Iniciais
 links:
+
 https://docs.github.com/en/github-cli/github-cli/quickstart
 http://www.cpdee.ufmg.br/~petee/ref/doc/minicursos_oficinas/git/Apostila_git.pdf
 https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf
