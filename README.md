@@ -46,7 +46,7 @@ Configure o Git para usar o GitHub CLI como o helper de credenciais:
 ```bash
 gh auth setup-git
 ```
-##Sobre o Git e o GitHub
+## Sobre o Git e o GitHub
 Controle de versões de arquivos: permite salvar versões e acompanhar mudanças.
 
 Git: software para controle de versões.
