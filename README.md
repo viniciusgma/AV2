@@ -14,8 +14,7 @@ http://www.cpdee.ufmg.br/~petee/ref/doc/minicursos_oficinas/git/Apostila_git.pdf
 https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf
 
 
-
-1. **Verifique se o Git está instalado:**
+**Verifique se o Git está instalado:**
    ```bash
    git --version
    ```
