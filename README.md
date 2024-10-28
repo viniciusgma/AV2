@@ -10,7 +10,9 @@ whatsapp: 55 55 984020506.
 links:
 
 [gh quickstart](https://docs.github.com/en/github-cli/github-cli/quickstart)
+
 [Apostila ufmg git](http://www.cpdee.ufmg.br/~petee/ref/doc/minicursos_oficinas/git/Apostila_git.pdf)
+
 [cheat sheet git e github](https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf)
 
 
