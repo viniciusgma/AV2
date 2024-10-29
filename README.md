@@ -158,7 +158,7 @@ git remote -v
 Listar todas as branches (locais e remotas):
 ```bash
 git branch -a
-
+```
 
 **Modificar os arquivos.**
 
