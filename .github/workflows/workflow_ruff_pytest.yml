@@ -47,5 +47,7 @@ jobs:
         continue-on-error: false  # Fail the workflow if there are formatting issues
   
       - name: Run Pytest
+        env:
+          PYTHONPATH: src
         run: |
           pytest --maxfail=5 --disable-warnings  # Adjust as needed
