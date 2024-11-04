@@ -6,7 +6,7 @@ Assim, depois de criar e acessar a pasta em que deseja clonar o projeto:
 
 `python -m venv nome_ambiente`
 
-No Windows:
+No Windows, para ativar o ambiente:
 
 `nome_ambiente\Scripts\Activate.sp1`
 
