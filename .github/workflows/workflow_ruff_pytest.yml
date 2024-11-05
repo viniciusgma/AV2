@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+ # This is a basic workflow to help you get started with Actions
 
 name: CI
 
@@ -37,7 +37,7 @@ jobs:
   
       - name: Run Ruff
         run: |
-          ruff .
+          ruff check .
         continue-on-error: false  # Fail the workflow if there are linting issues
   
       - name: Run Black
