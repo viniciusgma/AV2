@@ -1,4 +1,4 @@
-mesa
+mesa==2.2.4
 ruff
 black
 pytest
