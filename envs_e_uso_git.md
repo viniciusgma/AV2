@@ -167,17 +167,18 @@ git commit -m "mensagem"
 ### Workflow
 
 Clonar o repositório remoto:
-
 ```bash
 git clone <url> <path>
 ```
-Listar todas as branches (locais e remotas):
-```bash
-git branch -a
-```
+
 Ou repo local está atualizado, se não estiver, fazer pull:
 ```bash
 git status
+```
+
+Listar todas as branches (locais e remotas):
+```bash
+git branch -a
 ```
 
 Criar branch:
