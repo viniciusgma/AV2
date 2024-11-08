@@ -171,59 +171,72 @@ Clonar o repositório remoto:
 ```bash
 git clone <url> <path>
 ```
-Verificar as informações do repositório clonado:
-
-```bash
-git remote -v
-```
-
 Listar todas as branches (locais e remotas):
 ```bash
 git branch -a
 ```
-
-**Modificar os arquivos.**
-
-Verificar as diferenças:
-
-```bash
-git diff
-```
-
-Verificar o status do repositório:
-
+Ou repo local está atualizado, se não estiver, fazer pull:
 ```bash
 git status
 ```
+
+Criar branch:
+```bash
+git branch name_brach
+```
+Acessar branch:
+```bash
+git checkout name_branch
+```
+
+**Modificar os arquivos.**
 
 Adicionar todas as mudanças ao staging:
 ```bash
 git add -A
 ```
+
 Realizar um commit:
 ```bash
 git commit -m "Mensagem descritiva do commit"
 ```
+
+Acessar main:
+```bash
+git checkout main
+```
+
 Baixar e mesclar mudanças do repositório remoto:
 ```bash
-git pull origin master
+git pull
 ```
+
+Mesclar branches:
+```bash
+git merge branch_name
+```
+
+Listar branches mergidos:
+```bash
+git branch --merged
+```
+
 Enviar as mudanças para o repositório remoto:
 ```bash
-git push origin master
+git push
 ```
 
 Deletar a branch usada para as modificações:
-
 ```bash
-git branch --merged
-git branch -d name1
+git branch -d branch_name
 ```
+
 Listar todas as branches novamente:
 ```bash
 git branch -a
 ```
-Remover a branch do repositório remoto:
+
+Deletar a branch do repositório remoto:
 ```bash
-git push <nome_repositorio_remoto> --delete name1
+git push origin --delete branch_name
 ```
