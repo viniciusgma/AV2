@@ -171,9 +171,10 @@ Clonar o repositório remoto:
 git clone <url> <path>
 ```
 
-Ou repo local está atualizado, se não estiver, fazer pull:
+Ou ver status e puxar do remoto pull para garantir estar atualizado:
 ```bash
 git status
+git pull
 ```
 
 Listar todas as branches (locais e remotas):
