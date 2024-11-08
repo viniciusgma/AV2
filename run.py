@@ -1,3 +1,3 @@
-from forest_fire.server import server
+from src.server import server
 
 server.launch(open_browser=True)
