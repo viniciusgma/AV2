@@ -1,10 +1,12 @@
 import context
-from src.agent import func
+
+# importar o módulo import src.agent
 
 
 # Para o ruff não remover o import do context
 context.foo()
 
 
-def test_func():
-    assert func() == 1
+# escrever tests nomeados como test_name
+#  def test_func():
+#     assert func() == 1
