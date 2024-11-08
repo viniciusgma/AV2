@@ -1,4 +1,6 @@
+### Executar
 
+dentro da pasta AV2 executar comando `mesa runserver`
 ### Set up
 
 Depois de criar um env e executar `pip install -r requirements.txt` :
