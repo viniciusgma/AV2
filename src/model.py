@@ -7,7 +7,14 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-    def __init__(self, width=100, height=100, tree_density=0.60, water_density=0.5):
+    def __init__(
+        self,
+        width=100,
+        height=100,
+        tree_density=0.09,
+        water_density=0.4,
+        fire_started_Y_axis=True,
+    ):
         """
         Create a new forest fire model.
 
@@ -29,6 +36,12 @@ class ForestFire(mesa.Model):
                 "Burned Out": lambda model: model.count_condition(
                     lambda c: float(c) <= 0
                 ),
+                "Water": lambda model: model.count_condition_water(
+                    lambda c: float(c) > 0
+                ),
+                "Firemen": lambda model: model.count_condition_fireman(
+                    lambda c: float(c) > 0
+                ),
             }
         )
         # Colocar estação de bombeiros
@@ -39,10 +52,12 @@ class ForestFire(mesa.Model):
                 # Create a tree
                 new_tree = TreeCell((x, y), self)
                 # Set all trees in the first column on fire.
-                if x == 0:
-                    new_tree.condition = 0.6
+                if fire_started_Y_axis:
+                    if x == 0:
+                        new_tree.condition = 0.6
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
+
             else:
                 if self.random.random() < water_density:
                     # Create a tree
@@ -77,5 +92,23 @@ class ForestFire(mesa.Model):
             1
             for agent in model.schedule.agents
             if isinstance(agent, TreeCell) and condition_func(agent.condition)
+        )
+        return count
+
+    def count_condition_fireman(model, condition_func):
+        """ """
+        count = sum(
+            1
+            for agent in model.schedule.agents
+            if isinstance(agent, Fireman) and condition_func(agent.condition)
+        )
+        return count
+
+    def count_condition_water(model, condition_func):
+        """ """
+        count = sum(
+            1
+            for agent in model.schedule.agents
+            if isinstance(agent, Water) and condition_func(agent.condition)
         )
         return count

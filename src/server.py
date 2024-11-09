@@ -4,11 +4,11 @@ from .model import ForestFire
 
 COLORS = {
     "Fine": "#00AA00",  # Green
-    "On Fire": "#880000",  # Dark Red
+    "On Fire": "#FF6F6F",  # Light Red
     "Burned Out": "#000000",  # Black
     "Water": "#0000FF",  # Blue
     "Fireman": "#FFFF00",  # Yellow
-    "White": "#FFFFFF",  # White
+    "Nuvem": "#FFFFFF",  # White
 }
 
 
@@ -55,8 +55,8 @@ pie_chart = mesa.visualization.PieChartModule(
 model_params = {
     "height": 100,
     "width": 100,
-    "tree_density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
-    "water_density": mesa.visualization.Slider("Water density", 0.3, 0.01, 1.0, 0.01),
+    "tree_density": mesa.visualization.Slider("Tree density", 0.9, 0.01, 1.0, 0.01),
+    "water_density": mesa.visualization.Slider("Water density", 0.4, 0.01, 1.0, 0.01),
 }
 
 server = mesa.visualization.ModularServer(

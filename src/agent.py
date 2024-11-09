@@ -32,9 +32,9 @@ class TreeCell(mesa.Agent):
         """
         if self.condition < 0.7:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                neighbor.condition -= 0.1
+                neighbor.condition -= 0.05
                 if neighbor.condition < 0.7:
-                    self.condition -= 0.1
+                    self.condition -= 0.05
 
 
 class Fireman(mesa.Agent):
