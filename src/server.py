@@ -1,5 +1,5 @@
 import mesa
-from .agent import TreeCell, Water, Fireman
+from .agent import TreeCell, Water, Fireman, River
 from .model import ForestFire
 
 COLORS = {
@@ -7,6 +7,7 @@ COLORS = {
     "On Fire": "#880000",  # Dark Red
     "Burned Out": "#000000",  # Black
     "Water": "#0000FF",  # Blue
+    "river": "#ADD8E6", #Blue
     "Fireman": "#FFFF00",  # Yellow
     "White": "#FFFFFF",  # White
 }
@@ -38,6 +39,13 @@ def multi_agent_portrayal(agent):
             portrayal["Color"] = "#000000"  # Burned Out (Black)
         portrayal["Layer"] = 2
 
+    elif isinstance(agent, River):
+        if float(agent.condition) > 0:
+            portrayal["Color"] = "#ADD8E6"
+        else:
+            portrayal["Color"] = "#000000"
+        portrayal["Layer"] = 3
+
     portrayal["x"], portrayal["y"] = agent.pos
     return portrayal
 
@@ -57,6 +65,7 @@ model_params = {
     "width": 100,
     "tree_density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
     "water_density": mesa.visualization.Slider("Water density", 0.3, 0.01, 1.0, 0.01),
+    "how_many_rivers": mesa.visualization.Choice("how_many_rivers", value=1, choices=[0, 1, 2, 3]),
 }
 
 server = mesa.visualization.ModularServer(
