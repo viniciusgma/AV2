@@ -1,23 +1,49 @@
 import mesa
-
+from .agent import TreeCell, Water, Fireman
 from .model import ForestFire
 
-COLORS = {"Fine": "#00AA00", "On Fire": "#880000", "Burned Out": "#000000"}
+COLORS = {
+    "Fine": "#00AA00",  # Green
+    "On Fire": "#880000",  # Dark Red
+    "Burned Out": "#000000",  # Black
+    "Water": "#0000FF",  # Blue
+    "Fireman": "#FFFF00",  # Yellow
+    "White": "#FFFFFF",  # White
+}
 
 
-def forest_fire_portrayal(tree):
-    if tree is None:
+def multi_agent_portrayal(agent):
+    if agent is None:
         return
-    portrayal = {"Shape": "rect", "w": 1, "h": 1, "Filled": "true", "Layer": 0}
-    (x, y) = tree.pos
-    portrayal["x"] = x
-    portrayal["y"] = y
-    portrayal["Color"] = COLORS[tree.condition]
+
+    portrayal = {"Shape": "rect", "w": 1, "h": 1, "Filled": "true"}
+
+    if isinstance(agent, TreeCell):
+        if float(agent.condition) >= 0.7:
+            portrayal["Color"] = "#00AA00"  # Fine (Green)
+        elif float(agent.condition) > 0:
+            portrayal["Color"] = "#880000"  # On Fire (Red)
+        else:
+            portrayal["Color"] = "#000000"  # Burned Out (Black)
+        portrayal["Layer"] = 0
+
+    elif isinstance(agent, Fireman):
+        portrayal["Color"] = "#FFFF00" if float(agent.condition) > 0 else "#000000"
+        portrayal["Layer"] = 1
+
+    elif isinstance(agent, Water):
+        if float(agent.condition) > 0:
+            portrayal["Color"] = "#0000FF"  # Water (Blue)
+        else:
+            portrayal["Color"] = "#000000"  # Burned Out (Black)
+        portrayal["Layer"] = 2
+
+    portrayal["x"], portrayal["y"] = agent.pos
     return portrayal
 
 
 canvas_element = mesa.visualization.CanvasGrid(
-    forest_fire_portrayal, 100, 100, 500, 500
+    multi_agent_portrayal, 100, 100, 500, 500
 )
 tree_chart = mesa.visualization.ChartModule(
     [{"Label": label, "Color": color} for (label, color) in COLORS.items()]
@@ -29,8 +55,10 @@ pie_chart = mesa.visualization.PieChartModule(
 model_params = {
     "height": 100,
     "width": 100,
-    "density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
+    "tree_density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
+    "water_density": mesa.visualization.Slider("Water density", 0.3, 0.01, 1.0, 0.01),
 }
+
 server = mesa.visualization.ModularServer(
     ForestFire, [canvas_element, tree_chart, pie_chart], "Forest Fire", model_params
 )
