@@ -68,6 +68,9 @@ model_params = {
     "how_many_rivers": mesa.visualization.Choice(
         "how_many_rivers", value=1, choices=[0, 1, 2, 3]
     ),
+    "fire_focus": mesa.visualization.Slider(
+        "Number of fire focuses", 1, 1, 20, 1
+    ),  # usuario pode escolher número de focos do fogo com um slider de 1 até 20 focos
 }
 
 server = mesa.visualization.ModularServer(

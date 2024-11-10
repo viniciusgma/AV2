@@ -15,6 +15,7 @@ class ForestFire(mesa.Model):
         tree_density=0.60,
         water_density=0.5,
         how_many_rivers=1,
+        fire_focus=1,  # numero de focos de incêndio
     ):
         """
         Create a new forest fire model.
@@ -95,6 +96,14 @@ class ForestFire(mesa.Model):
                 center_x += 1
                 center_y += random.choice([-1, 0, 1])
                 radius += random.choice(increase_radius)
+
+        # adiciona os focos de incêndio
+        trees_on_fire = random.sample(
+            [agent for agent in self.schedule.agents if isinstance(agent, TreeCell)],
+            fire_focus,
+        )
+        for tree in trees_on_fire:
+            tree.condition = 0.6  # Define condição de "On Fire" da árvore p/ pegar fogo
 
         self.running = True
         self.datacollector.collect(self)
