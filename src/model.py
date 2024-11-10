@@ -9,7 +9,7 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-    def __init__(self, width=100, height=100, tree_density=0.60, water_density=0.5, how_many_rivers=1):
+    def __init__(self, width=100, height=100, tree_density=0.60, water_density=0.5, how_many_rivers=0):
         """
         Create a new forest fire model.
 
