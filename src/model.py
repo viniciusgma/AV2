@@ -46,16 +46,12 @@ class ForestFire(mesa.Model):
                 ),
             }
         )
-        # Colocar estação de bombeiros
 
         # Place a tree in each cell with Prob = density
         for contents, (x, y) in self.grid.coord_iter():
             if self.random.random() < tree_density:
                 # Create a tree
                 new_tree = TreeCell((x, y), self)
-                # Set all trees in the first column on fire.
-                if x == 0:
-                    new_tree.condition = 0.6
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
 
