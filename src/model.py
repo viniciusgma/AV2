@@ -1,5 +1,6 @@
 import mesa
-from .agent import TreeCell, Fireman, Water
+from .agent import TreeCell, Fireman, Water, River
+import random
 
 
 class ForestFire(mesa.Model):
@@ -11,9 +12,9 @@ class ForestFire(mesa.Model):
         self,
         width=100,
         height=100,
-        tree_density=0.09,
-        water_density=0.4,
-        fire_started_Y_axis=True,
+        tree_density=0.60,
+        water_density=0.5,
+        how_many_rivers=1,
     ):
         """
         Create a new forest fire model.
@@ -52,9 +53,8 @@ class ForestFire(mesa.Model):
                 # Create a tree
                 new_tree = TreeCell((x, y), self)
                 # Set all trees in the first column on fire.
-                if fire_started_Y_axis:
-                    if x == 0:
-                        new_tree.condition = 0.6
+                if x == 0:
+                    new_tree.condition = 0.6
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
 
@@ -72,6 +72,29 @@ class ForestFire(mesa.Model):
             new_fireman = Fireman(pos, self)
             self.grid.place_agent(new_fireman, pos)
             self.schedule.add(new_fireman)
+
+        # Coloca os rios
+        for rio in range(how_many_rivers):
+            center_x, center_y = 2, random.choice(range(1, height))
+            radius = 2
+            increase_radius = [-2, -1, 0, 1, 2]
+            while center_x <= 98 and center_y <= 98 and center_x >= 1 and center_y >= 1:
+                for i in range(-radius, radius):
+                    if (
+                        center_x > 98
+                        or center_y + i > 98
+                        or center_x <= 0
+                        or center_y + i <= 0
+                    ):
+                        continue
+                    pos = (center_x, center_y + i)
+                    river = River(pos, self)
+                    self.grid.place_agent(river, pos)
+                    self.schedule.add(river)
+
+                center_x += 1
+                center_y += random.choice([-1, 0, 1])
+                radius += random.choice(increase_radius)
 
         self.running = True
         self.datacollector.collect(self)

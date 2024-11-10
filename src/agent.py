@@ -88,9 +88,41 @@ class Water(mesa.Agent):
 
     def step(self):
         """ """
-        # Chuva apriomara árvores e perde vida
+        # apriomara árvores e perde vida
         if self.condition > 0:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                 if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
                     neighbor.condition += 0.2
                     self.condition -= 0.1
+
+
+class River(mesa.Agent):
+    """representa um rio
+    adiciona-se vida as arvoes que estao ate tres grids de distancia do rio.
+    """
+
+    def __init__(self, pos, model):
+        super().__init__(pos, model)
+        self.pos = pos
+        self.condition = 2
+
+    def step(self):
+        if self.condition > 0:
+            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                    neighbor.condition += 0.2
+                    self.condition -= 0.1
+                if isinstance(neighbor, River) and neighbor.condition < 1.5:
+                    neighbor.condition += 0.07
+                    neighbor.condition -= 0.1
+                for neigh in neighbor.model.grid.iter_neighbors(neighbor.pos, True):
+                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                        neigh.condition += 0.05
+                    if isinstance(neighbor, River) and neighbor.condition < 1.5:
+                        neigh.condition += 0.07
+
+                    for neig in neigh.model.grid.iter_neighbors(neigh.pos, True):
+                        if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                            neig.condition += 0.05
+                        if isinstance(neighbor, River) and neighbor.condition < 1.5:
+                            neig.condition += 0.07
