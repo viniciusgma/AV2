@@ -44,7 +44,7 @@ class TreeCell(mesa.Agent):
                 neighbor.condition -= 0.1
                 neighbor.condition = normalize_condition(neighbor.condition)
                 if neighbor.condition < 0.7:
-                    self.condition -= 0.1
+                    self.condition -= 0.05
 
 
 class Fireman(mesa.Agent):

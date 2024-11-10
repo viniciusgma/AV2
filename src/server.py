@@ -4,12 +4,12 @@ from .model import ForestFire
 
 COLORS = {
     "Fine": "#00AA00",  # Green
-    "On Fire": "#880000",  # Dark Red
+    "On Fire": "#FF6F6F",  # Light Red
     "Burned Out": "#000000",  # Black
     "Water": "#0000FF",  # Blue
     "river": "#ADD8E6",  # Blue
     "Fireman": "#FFFF00",  # Yellow
-    "White": "#FFFFFF",  # White
+    "Nuvem": "#FFFFFF",  # White
 }
 
 

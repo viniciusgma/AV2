@@ -38,6 +38,12 @@ class ForestFire(mesa.Model):
                 "Burned Out": lambda model: model.count_condition(
                     lambda c: float(c) <= 0
                 ),
+                "Water": lambda model: model.count_condition_water(
+                    lambda c: float(c) > 0
+                ),
+                "Firemen": lambda model: model.count_condition_fireman(
+                    lambda c: float(c) > 0
+                ),
             }
         )
         # Colocar estação de bombeiros
@@ -52,6 +58,7 @@ class ForestFire(mesa.Model):
                     new_tree.condition = 0.6
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
+
             else:
                 if self.random.random() < water_density:
                     # Create a tree
@@ -117,5 +124,23 @@ class ForestFire(mesa.Model):
             1
             for agent in model.schedule.agents
             if isinstance(agent, TreeCell) and condition_func(agent.condition)
+        )
+        return count
+
+    def count_condition_fireman(model, condition_func):
+        """ """
+        count = sum(
+            1
+            for agent in model.schedule.agents
+            if isinstance(agent, Fireman) and condition_func(agent.condition)
+        )
+        return count
+
+    def count_condition_water(model, condition_func):
+        """ """
+        count = sum(
+            1
+            for agent in model.schedule.agents
+            if isinstance(agent, Water) and condition_func(agent.condition)
         )
         return count
