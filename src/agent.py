@@ -2,6 +2,15 @@ import mesa
 import random
 
 
+def normalize_condition(value, min_value=0, max_value=1):
+    """
+
+    Garantir que a condição do agente esteja entre os valores mínimo e máximo.
+
+    """
+    return max(min(value, max_value), min_value)
+
+
 class TreeCell(mesa.Agent):
     """
     A tree cell. (teste workflow)
@@ -32,7 +41,8 @@ class TreeCell(mesa.Agent):
         """
         if self.condition < 0.7:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                neighbor.condition -= 0.05
+                neighbor.condition -= 0.1
+                neighbor.condition = normalize_condition(neighbor.condition)
                 if neighbor.condition < 0.7:
                     self.condition -= 0.05
 
@@ -71,6 +81,7 @@ class Fireman(mesa.Agent):
                 if neighbor.condition < 0.7:
                     neighbor.condition += 0.2
                     self.condition -= 0.1
+                    self.condition = normalize_condition(self.condition)
 
         x, y = self.pos
         new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
@@ -88,12 +99,14 @@ class Water(mesa.Agent):
 
     def step(self):
         """ """
-        # apriomara árvores e perde vida
+        # Chuva aprimora árvores e perde vida
         if self.condition > 0:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                 if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
                     neighbor.condition += 0.2
-                    self.condition -= 0.1
+                    self.condition -= 0.2  # nerfado de 0.1 -> 0.2
+                    self.condition = normalize_condition(self.condition, 0, 2)
+                    neighbor.condition = normalize_condition(neighbor.condition)
 
 
 class River(mesa.Agent):
@@ -104,7 +117,7 @@ class River(mesa.Agent):
     def __init__(self, pos, model):
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 2
+        self.condition = 1.5  # nerfado de 2 -> 1.5
 
     def step(self):
         if self.condition > 0:
@@ -112,20 +125,26 @@ class River(mesa.Agent):
                 if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
                     neighbor.condition += 0.2
                     self.condition -= 0.1
+                    self.condition = normalize_condition(self.condition, 0, 1.5)
                 if isinstance(neighbor, River) and neighbor.condition < 1.5:
                     neighbor.condition += 0.07
                     neighbor.condition -= 0.1
+                    neighbor.condition = normalize_condition(neighbor.condition)
                 for neigh in neighbor.model.grid.iter_neighbors(neighbor.pos, True):
                     if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
                         neigh.condition += 0.05
+                        neigh.condition = normalize_condition(neigh.condition)
                     if isinstance(neighbor, River) and neighbor.condition < 1.5:
                         neigh.condition += 0.07
+                        neigh.condition = normalize_condition(neigh.condition)
 
                     for neig in neigh.model.grid.iter_neighbors(neigh.pos, True):
                         if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
                             neig.condition += 0.05
+                            neig.condition = normalize_condition(neig.condition)
                         if isinstance(neighbor, River) and neighbor.condition < 1.5:
                             neig.condition += 0.07
+                            neig.condition = normalize_condition(neig.condition)
 
 
 class cloud(mesa.Agent):
@@ -144,18 +163,19 @@ class cloud(mesa.Agent):
         self.pos = pos
         self.condition = 2
 
-    def lightning(self):
+    def step(self):
         """
 
-        Joga um raio em um raio de 1 grid.
+        Joga um raio em um raio de 1 grid. 5% de chance de ocorrer
 
         """
-        if self.condition > 0:
-            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                if isinstance(neighbor, TreeCell):
-                    neighbor.condition = 0
+        num = random.randint(1, 100)
+        if num <= 5:
+            if self.condition > 0:
+                for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                    if isinstance(neighbor, TreeCell):
+                        neighbor.condition = 0  # coloca arvore em fogo
 
-    def rain(self):
         """
 
         Raio da chuva de 5 grids.
@@ -164,6 +184,7 @@ class cloud(mesa.Agent):
         if self.condition > 0:
             radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=5)
             for coisa in radius:
-                if isinstance(coisa, TreeCell):
+                if isinstance(coisa, TreeCell) and self.condition > 0:
                     coisa.condition += 0.7
                     self.condition -= 0.1
+                    coisa.condition = normalize_condition(coisa.condition)
