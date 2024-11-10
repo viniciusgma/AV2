@@ -3,13 +3,24 @@ from .agent import TreeCell, Fireman, Water, River
 import random
 
 
-
 class ForestFire(mesa.Model):
     """
     Simple Forest Fire model.
     """
 
+<<<<<<< HEAD
     def __init__(self, width=100, height=100, tree_density=0.60, water_density=0.5, how_many_rivers=0):
+=======
+    def __init__(
+        self,
+        width=100,
+        height=100,
+        tree_density=0.60,
+        water_density=0.5,
+        how_many_rivers=1,
+        fire_focus=1,  # numero de focos de incêndio
+    ):
+>>>>>>> 119c55fc7af0c92bbc7d6032df91e1759173e91f
         """
         Create a new forest fire model.
 
@@ -31,6 +42,12 @@ class ForestFire(mesa.Model):
                 "Burned Out": lambda model: model.count_condition(
                     lambda c: float(c) <= 0
                 ),
+                "Water": lambda model: model.count_condition_water(
+                    lambda c: float(c) > 0
+                ),
+                "Firemen": lambda model: model.count_condition_fireman(
+                    lambda c: float(c) > 0
+                ),
             }
         )
         # Colocar estação de bombeiros
@@ -45,6 +62,7 @@ class ForestFire(mesa.Model):
                     new_tree.condition = 0.6
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
+
             else:
                 if self.random.random() < water_density:
                     # Create a tree
@@ -59,18 +77,22 @@ class ForestFire(mesa.Model):
             new_fireman = Fireman(pos, self)
             self.grid.place_agent(new_fireman, pos)
             self.schedule.add(new_fireman)
-        
-        #Coloca os rios
+
+        # Coloca os rios
         for rio in range(how_many_rivers):
             center_x, center_y = 2, random.choice(range(1, height))
             radius = 2
             increase_radius = [-2, -1, 0, 1, 2]
-            while center_x <= 98 and center_y <= 98 and center_x >= 1 and center_y >=1:
-            
+            while center_x <= 98 and center_y <= 98 and center_x >= 1 and center_y >= 1:
                 for i in range(-radius, radius):
-                    if center_x > 98 or center_y + i> 98 or center_x <= 0 or center_y + i<=0:
+                    if (
+                        center_x > 98
+                        or center_y + i > 98
+                        or center_x <= 0
+                        or center_y + i <= 0
+                    ):
                         continue
-                    pos = (center_x, center_y + i)  
+                    pos = (center_x, center_y + i)
                     river = River(pos, self)
                     self.grid.place_agent(river, pos)
                     self.schedule.add(river)
@@ -79,10 +101,16 @@ class ForestFire(mesa.Model):
                 center_y += random.choice([-1, 0, 1])
                 radius += random.choice(increase_radius)
 
+        # adiciona os focos de incêndio
+        trees_on_fire = random.sample(
+            [agent for agent in self.schedule.agents if isinstance(agent, TreeCell)],
+            fire_focus,
+        )
+        for tree in trees_on_fire:
+            tree.condition = 0.6  # Define condição de "On Fire" da árvore p/ pegar fogo
+
         self.running = True
         self.datacollector.collect(self)
-
-        
 
     def step(self):
         """
@@ -100,5 +128,23 @@ class ForestFire(mesa.Model):
             1
             for agent in model.schedule.agents
             if isinstance(agent, TreeCell) and condition_func(agent.condition)
+        )
+        return count
+
+    def count_condition_fireman(model, condition_func):
+        """ """
+        count = sum(
+            1
+            for agent in model.schedule.agents
+            if isinstance(agent, Fireman) and condition_func(agent.condition)
+        )
+        return count
+
+    def count_condition_water(model, condition_func):
+        """ """
+        count = sum(
+            1
+            for agent in model.schedule.agents
+            if isinstance(agent, Water) and condition_func(agent.condition)
         )
         return count

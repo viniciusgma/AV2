@@ -4,12 +4,12 @@ from .model import ForestFire
 
 COLORS = {
     "Fine": "#00AA00",  # Green
-    "On Fire": "#880000",  # Dark Red
+    "On Fire": "#FF6F6F",  # Light Red
     "Burned Out": "#000000",  # Black
     "Water": "#0000FF",  # Blue
-    "river": "#ADD8E6", #Blue
+    "river": "#ADD8E6",  # Blue
     "Fireman": "#FFFF00",  # Yellow
-    "White": "#FFFFFF",  # White
+    "Nuvem": "#FFFFFF",  # White
 }
 
 
@@ -65,7 +65,12 @@ model_params = {
     "width": 100,
     "tree_density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
     "water_density": mesa.visualization.Slider("Water density", 0.3, 0.01, 1.0, 0.01),
-    "how_many_rivers": mesa.visualization.Choice("how_many_rivers", value=1, choices=[0, 1, 2, 3]),
+    "how_many_rivers": mesa.visualization.Choice(
+        "how_many_rivers", value=1, choices=[0, 1, 2, 3]
+    ),
+    "fire_focus": mesa.visualization.Slider(
+        "Number of fire focuses", 1, 1, 20, 1
+    ),  # usuario pode escolher número de focos do fogo com um slider de 1 até 20 focos
 }
 
 server = mesa.visualization.ModularServer(

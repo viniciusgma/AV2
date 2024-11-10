@@ -32,9 +32,9 @@ class TreeCell(mesa.Agent):
         """
         if self.condition < 0.7:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                neighbor.condition -= 0.1
+                neighbor.condition -= 0.05
                 if neighbor.condition < 0.7:
-                    self.condition -= 0.1
+                    self.condition -= 0.05
 
 
 class Fireman(mesa.Agent):
@@ -88,7 +88,7 @@ class Water(mesa.Agent):
 
     def step(self):
         """ """
-        # Chuva apriomara árvores e perde vida
+        # apriomara árvores e perde vida
         if self.condition > 0:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                 if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
@@ -96,11 +96,10 @@ class Water(mesa.Agent):
                     self.condition -= 0.1
 
 
-
 class River(mesa.Agent):
-    ''' representa um rio
+    """representa um rio
     adiciona-se vida as arvoes que estao ate tres grids de distancia do rio.
-    '''
+    """
 
     def __init__(self, pos, model):
         super().__init__(pos, model)
@@ -121,12 +120,50 @@ class River(mesa.Agent):
                         neigh.condition += 0.05
                     if isinstance(neighbor, River) and neighbor.condition < 1.5:
                         neigh.condition += 0.07
-                    
+
                     for neig in neigh.model.grid.iter_neighbors(neigh.pos, True):
                         if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
                             neig.condition += 0.05
                         if isinstance(neighbor, River) and neighbor.condition < 1.5:
                             neig.condition += 0.07
-                
 
 
+class cloud(mesa.Agent):
+    """
+
+    A nuvem possui duas ações possiveis:
+
+    lightning - joga um raio exatamente na árvore da mesma célula, fazendo ela pegar fogo
+    rain - faz chover em um raio específico, aumentando a vida de todas
+    e fazendo o fogo parar se existir.
+
+    """
+
+    def __init__(self, pos, model):
+        super().__init__(pos, model)
+        self.pos = pos
+        self.condition = 2
+
+    def lightning(self):
+        """
+
+        Joga um raio em um raio de 1 grid.
+
+        """
+        if self.condition > 0:
+            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                if isinstance(neighbor, TreeCell):
+                    neighbor.condition = 0
+
+    def rain(self):
+        """
+
+        Raio da chuva de 5 grids.
+
+        """
+        if self.condition > 0:
+            radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=5)
+            for coisa in radius:
+                if isinstance(coisa, TreeCell):
+                    coisa.condition += 0.7
+                    self.condition -= 0.1
