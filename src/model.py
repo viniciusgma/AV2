@@ -8,9 +8,6 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-<<<<<<< HEAD
-    def __init__(self, width=100, height=100, tree_density=0.60, water_density=0.5, how_many_rivers=0):
-=======
     def __init__(
         self,
         width=100,
@@ -20,7 +17,6 @@ class ForestFire(mesa.Model):
         how_many_rivers=1,
         fire_focus=1,  # numero de focos de incêndio
     ):
->>>>>>> 119c55fc7af0c92bbc7d6032df91e1759173e91f
         """
         Create a new forest fire model.
 

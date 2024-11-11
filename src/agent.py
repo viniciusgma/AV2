@@ -1,5 +1,6 @@
 import mesa
 import random
+from collections import deque
 
 
 class TreeCell(mesa.Agent):
@@ -107,25 +108,24 @@ class River(mesa.Agent):
         self.condition = 2
 
     def step(self):
+        dq = deque()
+        dq.append(self)
+        visited = []
         if self.condition > 0:
-            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                    neighbor.condition += 0.2
-                    self.condition -= 0.1
-                if isinstance(neighbor, River) and neighbor.condition < 1.5:
-                    neighbor.condition += 0.07
-                    neighbor.condition -= 0.1
-                for neigh in neighbor.model.grid.iter_neighbors(neighbor.pos, True):
-                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                        neigh.condition += 0.05
-                    if isinstance(neighbor, River) and neighbor.condition < 1.5:
-                        neigh.condition += 0.07
+            while len(visited) <= 16:
+                current = dq.popleft()
+                dq.extend(current.model.grid.iter_neighbors(current.pos, True))
+                if current not in visited:
+                    visited.append(current)
+                if current not in visited:
+                    visited.append(current)
+                if isinstance(current, TreeCell) and current.condition < 0.7:
+                    current.condition += 0.3
+                elif isinstance(current, River) and current.condition <0.7:
+                    current.condition += 0.05
 
-                    for neig in neigh.model.grid.iter_neighbors(neigh.pos, True):
-                        if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                            neig.condition += 0.05
-                        if isinstance(neighbor, River) and neighbor.condition < 1.5:
-                            neig.condition += 0.07
+
+
 
 
 class cloud(mesa.Agent):
