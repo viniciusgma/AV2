@@ -155,7 +155,6 @@ class River(mesa.Agent):
         dq.append(self)
         visited = []
         if self.condition > 0:
-<<<<<<< HEAD
             while len(visited) <= 16:
                 current = dq.popleft()
                 dq.extend(current.model.grid.iter_neighbors(current.pos, True))
@@ -170,32 +169,6 @@ class River(mesa.Agent):
 
 
 
-=======
-            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                    neighbor.condition += 0.2
-                    self.condition -= 0.1
-                    self.condition = normalize_condition(self.condition, 0, 1.5)
-                if isinstance(neighbor, River) and neighbor.condition < 1.5:
-                    neighbor.condition += 0.07
-                    neighbor.condition -= 0.1
-                    neighbor.condition = normalize_condition(neighbor.condition)
-                for neigh in neighbor.model.grid.iter_neighbors(neighbor.pos, True):
-                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                        neigh.condition += 0.05
-                        neigh.condition = normalize_condition(neigh.condition)
-                    if isinstance(neighbor, River) and neighbor.condition < 1.5:
-                        neigh.condition += 0.07
-                        neigh.condition = normalize_condition(neigh.condition)
-
-                    for neig in neigh.model.grid.iter_neighbors(neigh.pos, True):
-                        if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                            neig.condition += 0.05
-                            neig.condition = normalize_condition(neig.condition)
-                        if isinstance(neighbor, River) and neighbor.condition < 1.5:
-                            neig.condition += 0.07
-                            neig.condition = normalize_condition(neig.condition)
->>>>>>> 7779973e63facba716305aac22d7a676477a3d72
 
 
 class cloud(mesa.Agent):
