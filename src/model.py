@@ -1,5 +1,5 @@
 import mesa
-from .agent import TreeCell, Fireman, Water, River
+from .agent import TreeCell, Fireman, River
 import random
 
 
@@ -13,9 +13,8 @@ class ForestFire(mesa.Model):
         width=100,
         height=100,
         tree_density=0.60,
-        water_density=0.5,
         how_many_rivers=1,
-        fire_focus=1,  # numero de focos de incêndio
+        fire_focus=5,  # numero de focos de incêndio
         fireman_spawn_interval=10,  # Intervalo de tempo para criar novos bombeiros
     ):
         """
@@ -38,9 +37,6 @@ class ForestFire(mesa.Model):
                 ),
                 "Burned Out": lambda model: model.count_condition(
                     lambda c: float(c) <= 0
-                ),
-                "Water": lambda model: model.count_condition_water(
-                    lambda c: float(c) > 0
                 ),
                 "Firemen": lambda model: model.count_condition_fireman(
                     lambda c: float(c) > 0
@@ -141,14 +137,5 @@ class ForestFire(mesa.Model):
             1
             for agent in model.schedule.agents
             if isinstance(agent, Fireman) and condition_func(agent.condition)
-        )
-        return count
-
-    def count_condition_water(model, condition_func):
-        """ """
-        count = sum(
-            1
-            for agent in model.schedule.agents
-            if isinstance(agent, Water) and condition_func(agent.condition)
         )
         return count
