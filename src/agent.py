@@ -47,46 +47,76 @@ class TreeCell(mesa.Agent):
                     self.condition -= 0.05
 
 
+from collections import deque
+
 class Fireman(mesa.Agent):
     """
-    A tree cell. (teste workflow)
-
-    Attributes:
-        x, y: Grid coordinates
-        condition: Can be "Fine", "On Fire", or "Burned Out"
-        unique_id: (x,y) tuple.
-
-    unique_id isn't strictly necessary here, but it's good
-    practice to give one to each agent anyway.
+    Classe para o bombeiro, que agora usa BFS para encontrar o fogo mais próximo.
     """
 
     def __init__(self, pos, model):
         """
-        Create a new tree.
+        Cria um novo bombeiro.
         Args:
-            pos: The tree's coordinates on the grid.
-            model: standard model reference for agent.
+            pos: Coordenadas iniciais do bombeiro no grid.
+            model: Referência ao modelo.
         """
         super().__init__(pos, model)
         self.pos = pos
         self.condition = 1
 
+    def bfs_to_fire(self):
+        """
+        Executa uma busca em largura (BFS) para encontrar a célula de árvore mais próxima
+        que está pegando fogo (condition < 0.7).
+        """
+        queue = deque([self.pos])
+        visited = {self.pos}
+
+        while queue:
+            current_pos = queue.popleft()
+
+            # Verifica os vizinhos
+            for neighbor in self.model.grid.get_neighbors(current_pos, moore=True, include_center=False):
+                if neighbor.pos not in visited:
+                    visited.add(neighbor.pos)
+                    queue.append(neighbor.pos)
+
+                    # Se a célula do vizinho for uma árvore em fogo
+                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                        return neighbor.pos  # Retorna a posição da árvore em fogo mais próxima
+        return None  # Nenhum fogo encontrado
+
     def step(self):
         """
-        Se árvores vizinhas estão pegando fogo, o bombeiro apaga e
-        perde 0.1 de vida por árvore apagada
+        Ação do bombeiro em cada passo: usa a BFS para encontrar o fogo mais próximo e se move na direção dele.
         """
-        if self.condition > 0:
+        # Tenta encontrar a posição de uma árvore em fogo
+        target_pos = self.bfs_to_fire()
+
+        # Se houver um alvo em fogo, move-se na direção dele
+        if target_pos:
+            x, y = self.pos
+            tx, ty = target_pos
+
+            # Movimenta-se em direção ao fogo
+            new_pos = (x + (1 if tx > x else -1 if tx < x else 0),
+                       y + (1 if ty > y else -1 if ty < y else 0))
+
+            self.model.grid.move_agent(self, new_pos)
+
+            # Apaga o fogo e reduz a vida do bombeiro
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                if neighbor.condition < 0.7:
-                    neighbor.condition += 0.2
-                    self.condition -= 0.1
+                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                    neighbor.condition += 0.2  # Apaga um pouco o fogo
+                    self.condition -= 0.1  # Bombeiro perde vida
                     self.condition = normalize_condition(self.condition)
 
-        x, y = self.pos
-        new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
-        self.model.grid.move_agent(self, new_pos)
-
+        # Se não há fogo encontrado, move-se aleatoriamente
+        else:
+            x, y = self.pos
+            new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
+            self.model.grid.move_agent(self, new_pos)
 
 class Water(mesa.Agent):
     """ """
