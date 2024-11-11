@@ -2,7 +2,6 @@ import mesa
 from .agent import TreeCell, Fireman, Water, River
 import random
 
-
 class ForestFire(mesa.Model):
     """
     Simple Forest Fire model.
@@ -16,6 +15,7 @@ class ForestFire(mesa.Model):
         water_density=0.5,
         how_many_rivers=1,
         fire_focus=1,  # numero de focos de incêndio
+        fireman_spawn_interval=10,  # Intervalo de tempo para criar novos bombeiros
     ):
         """
         Create a new forest fire model.
@@ -54,10 +54,9 @@ class ForestFire(mesa.Model):
                 new_tree = TreeCell((x, y), self)
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
-
             else:
                 if self.random.random() < water_density:
-                    # Create a tree
+                    # Create a water agent
                     new_water = Water((x, y), self)
                     self.grid.place_agent(new_water, (x, y))
                     self.schedule.add(new_water)
@@ -103,16 +102,29 @@ class ForestFire(mesa.Model):
 
         self.running = True
         self.datacollector.collect(self)
+        
+        # **Configurações para criação automática de bombeiros**
+        self.fireman_spawn_interval = fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
+        self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
+
+    def spawn_fireman(self):
+        """Cria um novo bombeiro em uma posição aleatória da grade."""
+        x, y = random.randint(0, self.grid.width - 1), random.randint(0, self.grid.height - 1)
+        new_fireman = Fireman((x, y), self)
+        self.grid.place_agent(new_fireman, (x, y))
+        self.schedule.add(new_fireman)
 
     def step(self):
         """
-        Advance the model by one step.
+        Advance the model by one step and add new firemen based on the interval.
         """
         self.schedule.step()
         self.datacollector.collect(self)
+        self.step_count += 1
 
-    #        if self.count_condition(lambda c: 0 < float(c) < 1) == 0:
-    #            self.running = False
+        # **Cria novos bombeiros em intervalos de tempo específicos**
+        if self.step_count % self.fireman_spawn_interval == 0:
+            self.spawn_fireman()
 
     def count_condition(model, condition_func):
         """ """
