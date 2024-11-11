@@ -1,12 +1,11 @@
 import mesa
-from .agent import TreeCell, Water, Fireman, River
+from .agent import TreeCell, Fireman, River
 from .model import ForestFire
 
 COLORS = {
     "Fine": "#00AA00",  # Green
     "On Fire": "#FF6F6F",  # Light Red
     "Burned Out": "#000000",  # Black
-    "Water": "#0000FF",  # Blue
     "river": "#ADD8E6",  # Blue
     "Fireman": "#FFFF00",  # Yellow
     "Nuvem": "#FFFFFF",  # White
@@ -31,13 +30,6 @@ def multi_agent_portrayal(agent):
     elif isinstance(agent, Fireman):
         portrayal["Color"] = "#FFFF00" if float(agent.condition) > 0 else "#000000"
         portrayal["Layer"] = 1
-
-    elif isinstance(agent, Water):
-        if float(agent.condition) > 0:
-            portrayal["Color"] = "#0000FF"  # Water (Blue)
-        else:
-            portrayal["Color"] = "#000000"  # Burned Out (Black)
-        portrayal["Layer"] = 2
 
     elif isinstance(agent, River):
         if float(agent.condition) > 0:

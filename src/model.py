@@ -2,6 +2,7 @@ import mesa
 from .agent import TreeCell, Fireman, Water, River
 import random
 
+
 class ForestFire(mesa.Model):
     """
     Simple Forest Fire model.
@@ -54,12 +55,6 @@ class ForestFire(mesa.Model):
                 new_tree = TreeCell((x, y), self)
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
-            else:
-                if self.random.random() < water_density:
-                    # Create a water agent
-                    new_water = Water((x, y), self)
-                    self.grid.place_agent(new_water, (x, y))
-                    self.schedule.add(new_water)
 
         # Coloca os bombeiros
         center_x, center_y = width // 2, height // 2
@@ -102,14 +97,19 @@ class ForestFire(mesa.Model):
 
         self.running = True
         self.datacollector.collect(self)
-        
+
         # **Configurações para criação automática de bombeiros**
-        self.fireman_spawn_interval = fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
+        self.fireman_spawn_interval = (
+            fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
+        )
         self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
 
     def spawn_fireman(self):
         """Cria um novo bombeiro em uma posição aleatória da grade."""
-        x, y = random.randint(0, self.grid.width - 1), random.randint(0, self.grid.height - 1)
+        x, y = (
+            random.randint(0, self.grid.width - 1),
+            random.randint(0, self.grid.height - 1),
+        )
         new_fireman = Fireman((x, y), self)
         self.grid.place_agent(new_fireman, (x, y))
         self.schedule.add(new_fireman)

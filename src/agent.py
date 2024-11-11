@@ -48,8 +48,6 @@ class TreeCell(mesa.Agent):
                     self.condition -= 0.05
 
 
-from collections import deque
-
 class Fireman(mesa.Agent):
     """
     Classe para o bombeiro, que agora usa BFS para encontrar o fogo mais próximo.
@@ -78,14 +76,18 @@ class Fireman(mesa.Agent):
             current_pos = queue.popleft()
 
             # Verifica os vizinhos
-            for neighbor in self.model.grid.get_neighbors(current_pos, moore=True, include_center=False):
+            for neighbor in self.model.grid.get_neighbors(
+                current_pos, moore=True, include_center=False
+            ):
                 if neighbor.pos not in visited:
                     visited.add(neighbor.pos)
                     queue.append(neighbor.pos)
 
                     # Se a célula do vizinho for uma árvore em fogo
                     if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                        return neighbor.pos  # Retorna a posição da árvore em fogo mais próxima
+                        return (
+                            neighbor.pos
+                        )  # Retorna a posição da árvore em fogo mais próxima
         return None  # Nenhum fogo encontrado
 
     def step(self):
@@ -101,8 +103,10 @@ class Fireman(mesa.Agent):
             tx, ty = target_pos
 
             # Movimenta-se em direção ao fogo
-            new_pos = (x + (1 if tx > x else -1 if tx < x else 0),
-                       y + (1 if ty > y else -1 if ty < y else 0))
+            new_pos = (
+                x + (1 if tx > x else -1 if tx < x else 0),
+                y + (1 if ty > y else -1 if ty < y else 0),
+            )
 
             self.model.grid.move_agent(self, new_pos)
 
@@ -118,26 +122,6 @@ class Fireman(mesa.Agent):
             x, y = self.pos
             new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
             self.model.grid.move_agent(self, new_pos)
-
-class Water(mesa.Agent):
-    """ """
-
-    def __init__(self, pos, model):
-        """ """
-        super().__init__(pos, model)
-        self.pos = pos
-        self.condition = 2
-
-    def step(self):
-        """ """
-        # Chuva aprimora árvores e perde vida
-        if self.condition > 0:
-            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                    neighbor.condition += 0.2
-                    self.condition -= 0.2  # nerfado de 0.1 -> 0.2
-                    self.condition = normalize_condition(self.condition, 0, 2)
-                    neighbor.condition = normalize_condition(neighbor.condition)
 
 
 class River(mesa.Agent):
@@ -164,11 +148,8 @@ class River(mesa.Agent):
                     visited.append(current)
                 if isinstance(current, TreeCell) and current.condition < 0.7:
                     current.condition += 0.3
-                elif isinstance(current, River) and current.condition <0.7:
+                elif isinstance(current, River) and current.condition < 0.7:
                     current.condition += 0.05
-
-
-
 
 
 class cloud(mesa.Agent):
