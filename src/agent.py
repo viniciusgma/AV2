@@ -193,3 +193,13 @@ class cloud(mesa.Agent):
                     coisa.condition += 0.7
                     self.condition -= 0.1
                     coisa.condition = normalize_condition(coisa.condition)
+
+class Birds(mesa.Agent):
+    """
+    Pássaros voam em bando e espalham sementes na área queimada.
+    """
+
+    def __init__(self, pos, model):
+        super().__init__(pos, model)
+        self.pos = pos
+        # Implementar condition
