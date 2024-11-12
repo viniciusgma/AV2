@@ -31,16 +31,22 @@ class ForestFire(mesa.Model):
 
         self.datacollector = mesa.DataCollector(
             {
-                "Fine": lambda model: model.count_condition(lambda c: float(c) > 0.7),
+                "Fine": lambda model: model.count_condition(
+                    TreeCell, lambda c: float(c) > 0.7
+                ),
                 "On Fire": lambda model: model.count_condition(
-                    lambda c: 0 < float(c) <= 0.7
+                    TreeCell, lambda c: 0 < float(c) <= 0.7
                 ),
                 "Burned Out": lambda model: model.count_condition(
-                    lambda c: float(c) <= 0
+                    TreeCell, lambda c: float(c) <= 0
                 ),
-                "Firemen": lambda model: model.count_condition_fireman(
-                    lambda c: float(c) > 0
+                "Firemen": lambda model: model.count_condition(
+                    Fireman, lambda c: float(c) > 0
                 ),
+                "Rivers": lambda model: model.count_condition(
+                    River, lambda c: float(c) > 0
+                ),
+                "Terra": lambda model: model.count_condition(Terra, lambda c: True),
             }
         )
 
@@ -125,20 +131,11 @@ class ForestFire(mesa.Model):
         if self.step_count % self.fireman_spawn_interval == 0:
             self.spawn_fireman()
 
-    def count_condition(model, condition_func):
+    def count_condition(model, obj_class, condition_func):
         """ """
         count = sum(
             1
             for agent in model.schedule.agents
-            if isinstance(agent, TreeCell) and condition_func(agent.condition)
-        )
-        return count
-
-    def count_condition_fireman(model, condition_func):
-        """ """
-        count = sum(
-            1
-            for agent in model.schedule.agents
-            if isinstance(agent, Fireman) and condition_func(agent.condition)
+            if isinstance(agent, obj_class) and condition_func(agent.condition)
         )
         return count
