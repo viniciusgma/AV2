@@ -2,7 +2,6 @@ import mesa
 from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens
 import random
 
-
 class ForestFire(mesa.Model):
     """
     Simple Forest Fire model.
@@ -14,8 +13,9 @@ class ForestFire(mesa.Model):
         height=100,
         tree_density=0.60,
         how_many_rivers=1,
-        fire_focus=5,  # numero de focos de incêndio
+        fire_focus=5,  # número de focos de incêndio
         fireman_spawn_interval=10,  # Intervalo de tempo para criar novos bombeiros
+        cloud_quantity=5,  # Novo parâmetro para o número de nuvens
     ):
         """
         Create a new forest fire model.
@@ -100,19 +100,8 @@ class ForestFire(mesa.Model):
         for tree in trees_on_fire:
             tree.condition = 0.6  # Define condição de "On Fire" da árvore p/ pegar fogo
 
-        # adicionar nuvens
-
-        x = random.randint(0, self.grid.width - 2)
-        y = random.randint(0, self.grid.height - 2)
-        grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
-        nuvens = []
-
-        for i in grid4x4:
-            new_cloud = cloud(i, self)
-            nuvens.append(new_cloud)
-            self.grid.place_agent(new_cloud, i)
-
-        self.nuvens = Nuvens(nuvens, self)
+        # adicionar nuvens com base no valor do slider
+        self.create_clouds(cloud_quantity)
 
         self.running = True
         self.datacollector.collect(self)
@@ -122,6 +111,37 @@ class ForestFire(mesa.Model):
             fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
         )
         self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
+
+    def create_clouds(self, cloud_quantity):
+        """
+        Cria o número de nuvens baseado no valor fornecido pelo usuário no slider.
+        """
+        nuvens = []
+        for _ in range(cloud_quantity):  # Cloud quantity agora é o número de nuvens
+            # Geração de posições aleatórias para as nuvens dentro do grid
+            x = random.randint(3, self.grid.width - 8)
+            y = random.randint(3, self.grid.height - 8)
+
+            # Gera 4 posições ao redor da posição (x, y)
+            grid4x4 = [
+                (x + 1, y + 1), (x + 1, y - 1),
+                (x - 1, y + 1), (x - 1, y - 1)
+            ]
+            
+            # Filtra as posições para garantir que estão dentro dos limites do grid
+            valid_positions = [
+                pos for pos in grid4x4
+                if 0 <= pos[0] < self.grid.width and 0 <= pos[1] < self.grid.height
+            ]
+            
+            # Coloca as nuvens apenas nas posições válidas
+            for pos in valid_positions:
+                new_cloud = cloud(pos, self)
+                nuvens.append(new_cloud)
+                self.grid.place_agent(new_cloud, pos)
+
+        self.nuvens = Nuvens(nuvens, self)
+
 
     def spawn_fireman(self):
         """Cria um novo bombeiro em uma posição aleatória da grade."""
@@ -135,7 +155,7 @@ class ForestFire(mesa.Model):
 
     def step(self):
         """
-        Advance the model by one step and add new firemen based on the interval.
+        Avança o modelo em um passo e adiciona novos bombeiros com base no intervalo.
         """
         self.schedule.step()
         self.datacollector.collect(self)
@@ -148,7 +168,7 @@ class ForestFire(mesa.Model):
             self.spawn_fireman()
 
     def count_condition(model, obj_class, condition_func):
-        """ """
+        """Contagem de agentes com base em uma condição"""
         count = sum(
             1
             for agent in model.schedule.agents

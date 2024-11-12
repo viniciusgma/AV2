@@ -90,6 +90,11 @@ model_params = {
     "fire_focus": mesa.visualization.Slider(
         "Number of fire focuses", 5, 1, 20, 1
     ),  # Usuário pode escolher o número de focos de incêndio (1 a 20)
+    
+    # Adicionando o controle de nuvens (quantidade)
+    "cloud_quantity": mesa.visualization.Slider(
+        "Cloud quantity", 5, 1, 20, 1  # Slider para a quantidade de nuvens (1 a 20)
+    )
 }
 
 # Criação do servidor modular, que integra a visualização e o modelo
