@@ -206,11 +206,22 @@ class Nuvens(mesa.agent.AgentSet):
         super().__init__(model, num_nuvens)
 
     def do_step(self):
-        x = random.randint(4, self.model.grid.width - 8)
-        y = random.randint(4, self.model.grid.height - 8)
+        # Definindo o ponto inicial para a nuvem
+        x = random.randint(3, self.model.grid.width - 8)
+        y = random.randint(3, self.model.grid.height - 8)
+
+        # Definindo as posições ao redor da nuvem
         grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
-        i = 0
-        for nuvem in self:
-            nuvem.model.grid.move_agent(nuvem, grid4x4[i])
-            nuvem.step()
-            i += 1
+        
+        # Garantir que o número de nuvens a serem movidas seja limitado ao número de posições
+        num_positions = len(grid4x4)  # O número de posições válidas é 4
+        num_nuvens = len(self)  # Número de nuvens
+
+        # Verifica se o número de nuvens é maior que o número de posições válidas e ajusta
+        num_to_move = min(num_positions, num_nuvens)  # Move no máximo 4 nuvens
+
+        # Iteração sobre as nuvens
+        for i in range(num_to_move):
+            nuvem = self[i]  # Pega a i-ésima nuvem da lista
+            nuvem.model.grid.move_agent(nuvem, grid4x4[i])  # Move a nuvem para a posição
+            nuvem.step()  # Executa o passo da nuvem
