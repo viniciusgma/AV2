@@ -5,7 +5,9 @@ from collections import deque
 
 class Terra(mesa.Agent):
     def __init__(self, pos, model):
-        """ """
+        """ 
+        Cria uma célula de terra. O seu estado pode ser modificado
+        """
         super().__init__(pos, model)
         self.pos = pos
         self.condition = None
@@ -13,23 +15,23 @@ class Terra(mesa.Agent):
 
 class TreeCell(mesa.Agent):
     """
-    A tree cell. (teste workflow)
+    Representa uma árvore que pode estar em diferentes estados, como saudável, pegando fogo ou queimada.
 
-    Attributes:
-        x, y: Grid coordinates
-        condition: Can be "Fine", "On Fire", or "Burned Out"
-        unique_id: (x,y) tuple.
+    Atributos:
+        pos: Posições da árvore no modelo.
+        condition: Pode ser 'Fine' (saudável), 'On Fire' (pegando fogo) ou 'Burned Out' (queimada).
+        unique_id: Identificador único da árvore, baseado em suas coordenadas.
 
-    unique_id isn't strictly necessary here, but it's good
-    practice to give one to each agent anyway.
+    O objetivo é simular o crescimento e a propagação do fogo entre as árvores, afetando o estado delas.
     """
 
     def __init__(self, pos, model):
         """
-        Create a new tree.
+        Cria uma nova árvora.
+
         Args:
-            pos: The tree's coordinates on the grid.
-            model: standard model reference for agent.
+            pos: A posição da árvore no modelo.
+            model: Referência ao modelo onde o agente está inserido.
         """
         super().__init__(pos, model)
         self.pos = pos
@@ -37,7 +39,7 @@ class TreeCell(mesa.Agent):
 
     def step(self):
         """
-        If the tree is on fire, spread it to fine trees nearby.
+        Se a árvore está pegando fogo, ela espalha fogo para as árvores mais próximas.
         """
         if 0 < self.condition < 0.7:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
@@ -55,6 +57,7 @@ class Fireman(mesa.Agent):
     def __init__(self, pos, model):
         """
         Cria um novo bombeiro.
+
         Args:
             pos: Coordenadas iniciais do bombeiro no grid.
             model: Referência ao modelo.
@@ -129,8 +132,9 @@ class Fireman(mesa.Agent):
 
 
 class River(mesa.Agent):
-    """representa um rio
-    adiciona-se vida as arvoes que estao ate tres grids de distancia do rio.
+    """
+    Representa um rio.
+    Adiciona-se vida as árvoes que estão até trés grids de distancia do rio.
     """
 
     def __init__(self, pos, model):
@@ -158,7 +162,6 @@ class River(mesa.Agent):
 
 class cloud(mesa.Agent):
     """
-
     A nuvem possui duas ações possiveis:
 
     lightning - joga um raio exatamente na árvore da mesma célula, fazendo ela pegar fogo
@@ -203,8 +206,8 @@ class Nuvens(mesa.agent.AgentSet):
         super().__init__(model, num_nuvens)
 
     def do_step(self):
-        x = random.randint(3, self.model.grid.width - 8)
-        y = random.randint(3, self.model.grid.height - 8)
+        x = random.randint(4, self.model.grid.width - 8)
+        y = random.randint(4, self.model.grid.height - 8)
         grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
         i = 0
         for nuvem in self:
