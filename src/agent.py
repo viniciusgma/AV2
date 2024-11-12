@@ -170,7 +170,7 @@ class cloud(mesa.Agent):
     def __init__(self, pos, model):
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 200
+        self.condition = 2000
 
     def step(self):
         """
@@ -178,13 +178,12 @@ class cloud(mesa.Agent):
         Joga um raio em um raio de 1 grid. 5% de chance de ocorrer
 
         """
-        num = random.randint(1, 100)
+        num = random.randint(1, 20)
         if num <= 5:
             if self.condition > 0:
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell):
-                        if neighbor.condition:
-                            neighbor.condition = 0.699  # coloca arvore em fogo
+                        neighbor.condition = 0.699  # coloca arvore em fogo
 
         """
 
@@ -192,9 +191,23 @@ class cloud(mesa.Agent):
 
         """
         if self.condition > 0:
-            radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=5)
+            radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=2)
             for coisa in radius:
-                if isinstance(coisa, TreeCell) and self.condition > 0:
-                    if coisa.condition:
-                        coisa.condition += 0.7
-                        self.condition -= 0.1
+                if isinstance(coisa, TreeCell):
+                    coisa.condition += 1
+                    self.condition -= 0.1
+
+
+class Nuvens(mesa.agent.AgentSet):
+    def __init__(self, model, num_nuvens):
+        super().__init__(model, num_nuvens)
+
+    def do_step(self):
+        x = random.randint(0, self.model.grid.width - 8)
+        y = random.randint(0, self.model.grid.height - 8)
+        grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
+        i = 0
+        for nuvem in self:
+            nuvem.model.grid.move_agent(nuvem, grid4x4[i])
+            nuvem.step()
+            i += 1

@@ -1,5 +1,5 @@
 import mesa
-from .agent import TreeCell, Fireman, River, Terra
+from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens
 import random
 
 
@@ -100,6 +100,20 @@ class ForestFire(mesa.Model):
         for tree in trees_on_fire:
             tree.condition = 0.6  # Define condição de "On Fire" da árvore p/ pegar fogo
 
+        # adicionar nuvens
+
+        x = random.randint(0, self.grid.width - 1)
+        y = random.randint(0, self.grid.height - 1)
+        grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
+        nuvens = []
+
+        for i in grid4x4:
+            new_cloud = cloud(i, self)
+            nuvens.append(new_cloud)
+            self.grid.place_agent(new_cloud, i)
+
+        self.nuvens = Nuvens(nuvens, self)
+
         self.running = True
         self.datacollector.collect(self)
 
@@ -126,6 +140,8 @@ class ForestFire(mesa.Model):
         self.schedule.step()
         self.datacollector.collect(self)
         self.step_count += 1
+
+        self.nuvens.do_step()
 
         # **Cria novos bombeiros em intervalos de tempo específicos**
         if self.step_count % self.fireman_spawn_interval == 0:
