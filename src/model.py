@@ -102,8 +102,8 @@ class ForestFire(mesa.Model):
 
         # adicionar nuvens
 
-        x = random.randint(0, self.grid.width - 1)
-        y = random.randint(0, self.grid.height - 1)
+        x = random.randint(0, self.grid.width - 2)
+        y = random.randint(0, self.grid.height - 2)
         grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
         nuvens = []
 
@@ -126,8 +126,8 @@ class ForestFire(mesa.Model):
     def spawn_fireman(self):
         """Cria um novo bombeiro em uma posição aleatória da grade."""
         x, y = (
-            random.randint(0, self.grid.width - 1),
-            random.randint(0, self.grid.height - 1),
+            random.randint(0, self.grid.width - 2),
+            random.randint(0, self.grid.height - 2),
         )
         new_fireman = Fireman((x, y), self)
         self.grid.place_agent(new_fireman, (x, y))
