@@ -1,5 +1,5 @@
 import mesa
-from .agent import TreeCell, Fireman, River
+from .agent import TreeCell, Fireman, River, Terra
 import random
 
 
@@ -51,6 +51,9 @@ class ForestFire(mesa.Model):
                 new_tree = TreeCell((x, y), self)
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
+            else:
+                new_terra = Terra((x, y), self)
+                self.grid.place_agent(new_terra, (x, y))
 
         # Coloca os bombeiros
         center_x, center_y = width // 2, height // 2

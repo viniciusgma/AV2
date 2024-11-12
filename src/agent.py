@@ -3,13 +3,12 @@ import random
 from collections import deque
 
 
-def normalize_condition(value, min_value=0, max_value=1):
-    """
-
-    Garantir que a condição do agente esteja entre os valores mínimo e máximo.
-
-    """
-    return max(min(value, max_value), min_value)
+class Terra(mesa.Agent):
+    def __init__(self, pos, model):
+        """ """
+        super().__init__(pos, model)
+        self.pos = pos
+        self.condition = None
 
 
 class TreeCell(mesa.Agent):
@@ -42,10 +41,10 @@ class TreeCell(mesa.Agent):
         """
         if self.condition < 0.7:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                neighbor.condition -= 0.1
-                neighbor.condition = normalize_condition(neighbor.condition)
-                if neighbor.condition < 0.7:
-                    self.condition -= 0.05
+                if neighbor.condition:
+                    neighbor.condition -= 0.05
+                    if neighbor.condition < 0.7:
+                        self.condition -= 0.05
 
 
 class Fireman(mesa.Agent):
@@ -62,7 +61,7 @@ class Fireman(mesa.Agent):
         """
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 1
+        self.condition = 200
 
     def bfs_to_fire(self):
         """
@@ -94,6 +93,7 @@ class Fireman(mesa.Agent):
         """
         Ação do bombeiro em cada passo: usa a BFS para encontrar o fogo mais próximo e se move na direção dele.
         """
+
         # Tenta encontrar a posição de uma árvore em fogo
         target_pos = self.bfs_to_fire()
 
@@ -115,13 +115,17 @@ class Fireman(mesa.Agent):
                 if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
                     neighbor.condition += 0.2  # Apaga um pouco o fogo
                     self.condition -= 0.1  # Bombeiro perde vida
-                    self.condition = normalize_condition(self.condition)
 
         # Se não há fogo encontrado, move-se aleatoriamente
         else:
             x, y = self.pos
             new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
             self.model.grid.move_agent(self, new_pos)
+
+        # Remove se morreu
+        if self.condition <= 0:
+            self.model.schedule.remove(self)
+            self.model.grid.remove_agent(self)
 
 
 class River(mesa.Agent):
@@ -166,7 +170,7 @@ class cloud(mesa.Agent):
     def __init__(self, pos, model):
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 2
+        self.condition = 200
 
     def step(self):
         """
@@ -179,7 +183,8 @@ class cloud(mesa.Agent):
             if self.condition > 0:
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell):
-                        neighbor.condition = 0  # coloca arvore em fogo
+                        if neighbor.condition:
+                            neighbor.condition = 0.7  # coloca arvore em fogo
 
         """
 
@@ -190,6 +195,6 @@ class cloud(mesa.Agent):
             radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=5)
             for coisa in radius:
                 if isinstance(coisa, TreeCell) and self.condition > 0:
-                    coisa.condition += 0.7
-                    self.condition -= 0.1
-                    coisa.condition = normalize_condition(coisa.condition)
+                    if coisa.condition:
+                        coisa.condition += 0.7
+                        self.condition -= 0.1
