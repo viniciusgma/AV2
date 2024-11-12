@@ -5,7 +5,9 @@ from collections import deque
 
 class Terra(mesa.Agent):
     def __init__(self, pos, model):
-        """ """
+        """ 
+        Create a eath cell
+        """
         super().__init__(pos, model)
         self.pos = pos
         self.condition = None
