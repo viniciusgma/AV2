@@ -60,7 +60,7 @@ pie_chart = mesa.visualization.PieChartModule(
 model_params = {
     "height": 100,
     "width": 100,
-    "tree_density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
+    "tree_density": mesa.visualization.Slider("Tree density", 0.8, 0.01, 1.0, 0.01),
     "how_many_rivers": mesa.visualization.Choice(
         "how_many_rivers", value=1, choices=[0, 1, 2, 3]
     ),

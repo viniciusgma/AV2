@@ -39,12 +39,12 @@ class TreeCell(mesa.Agent):
         """
         If the tree is on fire, spread it to fine trees nearby.
         """
-        if self.condition < 0.7:
+        if 0 < self.condition < 0.7:
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                 if neighbor.condition:
-                    neighbor.condition -= 0.05
-                    if neighbor.condition < 0.7:
-                        self.condition -= 0.05
+                    neighbor.condition -= 0.1
+                    if 0 < neighbor.condition < 0.7:
+                        self.condition -= 0.1
 
 
 class Fireman(mesa.Agent):
@@ -61,7 +61,7 @@ class Fireman(mesa.Agent):
         """
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 200
+        self.condition = 200  # Vida do bombeiro
 
     def bfs_to_fire(self):
         """
@@ -83,7 +83,7 @@ class Fireman(mesa.Agent):
                     queue.append(neighbor.pos)
 
                     # Se a célula do vizinho for uma árvore em fogo
-                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                    if isinstance(neighbor, TreeCell) and 0 < neighbor.condition < 0.7:
                         return (
                             neighbor.pos
                         )  # Retorna a posição da árvore em fogo mais próxima
@@ -184,7 +184,7 @@ class cloud(mesa.Agent):
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell):
                         if neighbor.condition:
-                            neighbor.condition = 0.7  # coloca arvore em fogo
+                            neighbor.condition = 0.699  # coloca arvore em fogo
 
         """
 
