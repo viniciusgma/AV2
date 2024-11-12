@@ -203,8 +203,8 @@ class Nuvens(mesa.agent.AgentSet):
         super().__init__(model, num_nuvens)
 
     def do_step(self):
-        x = random.randint(2, self.model.grid.width - 8)
-        y = random.randint(2, self.model.grid.height - 8)
+        x = random.randint(3, self.model.grid.width - 8)
+        y = random.randint(3, self.model.grid.height - 8)
         grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
         i = 0
         for nuvem in self:
