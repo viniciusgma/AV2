@@ -65,12 +65,12 @@ class ForestFire(mesa.Model):
                 # Cria uma árvore
                 new_tree = TreeCell((x, y), self)
                 self.grid.place_agent(new_tree, (x, y))
-                self.schedule.add(new_tree)
+                self.schedule.add(new_tree) 
             else:
                 new_terra = Terra((x, y), self)
                 self.grid.place_agent(new_terra, (x, y))
 
-        # Coloca os bombeiros
+        # Coloca os bombeiros   
         center_x, center_y = width // 2, height // 2
         for i in range(how_many_initial_fireman):
             pos = (center_x + i - 1, center_y + i - 1)
@@ -103,7 +103,7 @@ class ForestFire(mesa.Model):
 
         # Adiciona os focos de incêndio
         trees_on_fire = random.sample(
-            [agent for agent in self.schedule.agents if isinstance(agent, TreeCell)],
+            [agent for agent in self.schedule.agents if isinstance(agent, TreeCell) and agent.condition == 1.0],
             fire_focus,
         )
         for tree in trees_on_fire:

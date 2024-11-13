@@ -13,6 +13,35 @@ COLORS = {
     "Terra": "#E5AA70",  # Cor de terra
 }
 
+def get_tree_color(condition):
+    """
+    Retorna uma cor baseada na condição da árvore (0 a 1).
+    O gradiente vai de verde (saudável) para vermelho (em chamas), depois para preto (queimada).
+    """
+    condition = max(0, min(1, condition))  # Garantir que a condição está no intervalo [0, 1]
+
+    if condition >= 0.7:  # Árvore saudável (verde)
+        r = 0
+        g = int(220 * (condition - 0.7)/ 0.3) # De verde para amarelo
+        b = 0
+    elif condition > 0.3:  # Árvore pegando fogo (vermelho)
+        r = int(220 * ((condition - 0.3) / 0.4))  # De amarelo para vermelho
+        #r = 220
+        g = 0
+        b = 0
+    else:  # Árvore queimada (preto)
+        r = 0
+        g = 0
+        b = 0
+
+    # Garantir que r, g e b estão no intervalo [0, 255]
+    r = max(0, min(255, r))
+    g = max(0, min(255, g))
+    b = max(0, min(255, b))
+
+    # Retorna a cor em formato hexadecimal
+    return f"#{r:02x}{g:02x}{b:02x}"
+
 
 def multi_agent_portrayal(agent):
     """
@@ -32,31 +61,18 @@ def multi_agent_portrayal(agent):
 
     # Representação do agente TreeCell
     elif isinstance(agent, TreeCell):
-        # A condição da árvore define a cor
-        try:
-            condition = float(agent.condition)
-            if condition >= 0.7:
-                portrayal["Color"] = COLORS["Fine"]
-            elif condition > 0:
-                portrayal["Color"] = COLORS["On Fire"]
-            else:
-                portrayal["Color"] = COLORS["Burned Out"]
-        except ValueError:
-            portrayal["Color"] = "#000000"  # Cor padrão caso haja erro na condição
+        condition = agent.condition
+        portrayal["Color"] = get_tree_color(condition)  # Use a função get_tree_color
         portrayal["Layer"] = 1
 
     # Representação do agente Fireman
     elif isinstance(agent, Fireman):
-        portrayal["Color"] = (
-            COLORS["Fireman"] if float(agent.condition) > 0 else "#000000"
-        )
+        portrayal["Color"] = COLORS["Fireman"] if float(agent.condition) > 0 else "#000000"
         portrayal["Layer"] = 2
 
     # Representação do agente River
     elif isinstance(agent, River):
-        portrayal["Color"] = (
-            COLORS["River"] if float(agent.condition) > 0 else "#000000"
-        )
+        portrayal["Color"] = COLORS["River"] if float(agent.condition) > 0 else "#000000"
         portrayal["Layer"] = 3
 
     # Representação do agente Cloud
@@ -67,6 +83,7 @@ def multi_agent_portrayal(agent):
     # Definindo as posições no grid
     portrayal["x"], portrayal["y"] = agent.pos
     return portrayal
+
 
 
 # Configuração do CanvasGrid para visualização dos agentes
@@ -98,7 +115,7 @@ model_params = {
     # Adicionando o controle de nuvens (quantidade)
     "cloud_quantity": mesa.visualization.Slider(
         "Cloud quantity",
-        2,
+        0,
         0,
         20,
         1,  # Slider para a quantidade de nuvens (1 a 20)
