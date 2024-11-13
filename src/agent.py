@@ -228,12 +228,88 @@ class Nuvens(mesa.agent.AgentSet):
             nuvem.step()  # Executa o passo da nuvem
 
 
-class Birds(mesa.Agent):
+class Bird(mesa.Agent):
     """
-    Pássaros voam em bando e espalham sementes na área queimada.
+    Classe Bird que representa os pássaros responsáveis por regenerar terra.
     """
 
     def __init__(self, pos, model):
+        """"
+        Inicia o pássaro.
+
+        Args:
+            pos: Posição inicial do pássaro no grid.
+            model: Referência ao modelo.
+        """
         super().__init__(pos, model)
         self.pos = pos
-        # Implementar condition
+        self.condition = 100  # Vida do passaro
+
+    def bfs_to_land(self):
+        """
+        Executa uma busca em largura (BFS) para encontrar a célula de terra mais próxima.
+        """
+        queue = deque([self.pos])
+        visited = {self.pos}
+
+        while queue:
+            current_pos = queue.popleft()
+
+            # Verifica os vizinhos
+            for neighbor in self.model.grid.get_neighbors(
+                current_pos, moore=True, include_center=False
+            ):
+                if neighbor.pos not in visited:
+                    visited.add(neighbor.pos)
+                    queue.append(neighbor.pos)
+
+                    # Se a célula do vizinho for terra
+                    if isinstance(neighbor, Terra):
+                        return (neighbor.pos)  #retorna a posição da terra mais próxima
+        return None  #nenhuma terra encontrada
+
+    def step(self):
+        """
+        Ação do pássaro em cada passo: usa a BFS para encontrar a terra mais próxima e se move na direção dela.
+        """
+        # Tenta encontrar a posição de terra
+        target_pos = self.bfs_to_land()
+
+        # Se houver terra, move-se na direção dela
+        if target_pos:
+            x, y = self.pos
+            tx, ty = target_pos
+
+            # Movimenta-se em direção da terra
+            new_pos = (
+                x + (1 if tx > x else -1 if tx < x else 0),
+                y + (1 if ty > y else -1 if ty < y else 0),
+            )
+
+            self.model.grid.move_agent(self, new_pos)
+
+            # Se o pássaro está próximo de uma árvore em chamas, ele perde vida
+            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                    self.condition -= 2  # Perde vida ao passar pelo fogo
+
+            # Transformação de terra em árvore
+            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                if isinstance(neighbor, Terra):
+                    new_tree = TreeCell(neighbor.pos, self.model)
+                    self.model.grid.remove_agent(neighbor)  # Remove a terra
+                    self.model.grid.place_agent(new_tree, neighbor.pos)  # Coloca a árvore
+                    self.model.schedule.add(new_tree)  # Adiciona a nova árvore ao agendamento
+                    self.condition -= 0.1  # Perde vida ao transformar terra em árvore
+
+
+        # Se não há terra, move-se aleatoriamente
+        else:
+            x, y = self.pos
+            new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
+            self.model.grid.move_agent(self, new_pos)
+
+        # Remove o pássaro se ele morreu
+        if self.condition <= 0:
+            self.model.schedule.remove(self)
+            self.model.grid.remove_agent(self)
