@@ -2,6 +2,7 @@ import mesa
 from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens
 import random
 
+
 class ForestFire(mesa.Model):
     """
     Simple Forest Fire model.
@@ -116,32 +117,31 @@ class ForestFire(mesa.Model):
         """
         Cria o número de nuvens baseado no valor fornecido pelo usuário no slider.
         """
-        nuvens = []
+
+        self.nuvens = []
         for _ in range(cloud_quantity):  # Cloud quantity agora é o número de nuvens
+            nuvens = []
             # Geração de posições aleatórias para as nuvens dentro do grid
-            x = random.randint(3, self.grid.width - 8)
-            y = random.randint(3, self.grid.height - 8)
+            x = random.randint(7, self.grid.width - 8)
+            y = random.randint(7, self.grid.height - 8)
 
             # Gera 4 posições ao redor da posição (x, y)
-            grid4x4 = [
-                (x + 1, y + 1), (x + 1, y - 1),
-                (x - 1, y + 1), (x - 1, y - 1)
-            ]
-            
+            grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
+
             # Filtra as posições para garantir que estão dentro dos limites do grid
             valid_positions = [
-                pos for pos in grid4x4
+                pos
+                for pos in grid4x4
                 if 0 <= pos[0] < self.grid.width and 0 <= pos[1] < self.grid.height
             ]
-            
+
             # Coloca as nuvens apenas nas posições válidas
             for pos in valid_positions:
                 new_cloud = cloud(pos, self)
                 nuvens.append(new_cloud)
                 self.grid.place_agent(new_cloud, pos)
 
-        self.nuvens = Nuvens(nuvens, self)
-
+            self.nuvens.append(Nuvens(nuvens, self))
 
     def spawn_fireman(self):
         """Cria um novo bombeiro em uma posição aleatória da grade."""
@@ -161,7 +161,8 @@ class ForestFire(mesa.Model):
         self.datacollector.collect(self)
         self.step_count += 1
 
-        self.nuvens.do_step()
+        for nuvens in self.nuvens:
+            nuvens.do_step()
 
         # **Cria novos bombeiros em intervalos de tempo específicos**
         if self.step_count % self.fireman_spawn_interval == 0:

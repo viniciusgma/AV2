@@ -5,7 +5,7 @@ from collections import deque
 
 class Terra(mesa.Agent):
     def __init__(self, pos, model):
-        """ 
+        """
         Cria uma célula de terra. O seu estado pode ser modificado
         """
         super().__init__(pos, model)
@@ -206,8 +206,8 @@ class Nuvens(mesa.agent.AgentSet):
         super().__init__(model, num_nuvens)
 
     def do_step(self):
-        x = random.randint(3, self.model.grid.width - 8)
-        y = random.randint(3, self.model.grid.height - 8)
+        x = random.randint(7, self.model.grid.width - 8)
+        y = random.randint(7, self.model.grid.height - 8)
         grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
         i = 0
         for nuvem in self:
