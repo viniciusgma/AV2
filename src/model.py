@@ -21,7 +21,6 @@ class ForestFire(mesa.Model):
         rain_probability=0.25,  # Probabilidade de chuva
         how_many_initial_fireman = 5,
         new_fireman_rate = 1,
-        fireman_life = 200
     ):
         """
         Create a new forest fire model.
@@ -121,6 +120,8 @@ class ForestFire(mesa.Model):
             fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
         )
         self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
+        self.fireman_life = fireman_life
+        self.new_fireman_rate = new_fireman_rate
 
     def create_clouds(self, cloud_quantity):
         """
@@ -175,7 +176,7 @@ class ForestFire(mesa.Model):
 
         # **Cria novos bombeiros em intervalos de tempo específicos**
         if self.step_count % self.fireman_spawn_interval == 0:
-            self.spawn_fireman(200, 1) # TODO: Mandar os parâmetros
+            self.spawn_fireman(self.fireman_life, self.new_fireman_rate)
 
     def count_condition(self, obj_class, condition_func):
         """Contagem de agentes com base em uma condição"""
