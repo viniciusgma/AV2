@@ -15,9 +15,12 @@ class ForestFire(mesa.Model):
         how_many_rivers=1,
         fire_focus=5,  # número de focos de incêndio
         fireman_spawn_interval=10,  # Intervalo de tempo para criar novos bombeiros
+        fireman_life = 200,
         cloud_quantity=5,  # Novo parâmetro para o número de nuvens
         lightning_probability=0.25,  # Probabilidade de raio
         rain_probability=0.25,  # Probabilidade de chuva
+        how_many_initial_fireman = 5,
+        new_fireman_rate = 1,
     ):
         """
         Create a new forest fire model.
@@ -69,9 +72,9 @@ class ForestFire(mesa.Model):
 
         # Coloca os bombeiros   
         center_x, center_y = width // 2, height // 2
-        for i in range(8):
+        for i in range(how_many_initial_fireman):
             pos = (center_x + i - 1, center_y + i - 1)
-            new_fireman = Fireman(pos, self)
+            new_fireman = Fireman(pos, self, fireman_life)
             self.grid.place_agent(new_fireman, pos)
             self.schedule.add(new_fireman)
 
@@ -117,6 +120,8 @@ class ForestFire(mesa.Model):
             fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
         )
         self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
+        self.fireman_life = fireman_life
+        self.new_fireman_rate = new_fireman_rate
 
     def create_clouds(self, cloud_quantity):
         """
@@ -147,14 +152,15 @@ class ForestFire(mesa.Model):
 
             self.nuvens.append(Nuvens(nuvens, self))
 
-    def spawn_fireman(self):
+    def spawn_fireman(self, fireman_life, new_fireman_rate):
         """Cria um novo bombeiro em uma posição aleatória da grade."""
-        x, y = (
-            random.randint(0, self.grid.width - 2),
-            random.randint(0, self.grid.height - 2),
-        )
-        new_fireman = Fireman((x, y), self)
-        self.grid.place_agent(new_fireman, (x, y))
+        for _ in range(new_fireman_rate):
+            x, y = (
+                random.randint(0, self.grid.width - 2),
+                random.randint(0, self.grid.height - 2),
+            )
+            new_fireman = Fireman((x, y), self, fireman_life)
+            self.grid.place_agent(new_fireman, (x, y))
         self.schedule.add(new_fireman)
 
     def step(self):
@@ -170,7 +176,7 @@ class ForestFire(mesa.Model):
 
         # **Cria novos bombeiros em intervalos de tempo específicos**
         if self.step_count % self.fireman_spawn_interval == 0:
-            self.spawn_fireman()
+            self.spawn_fireman(self.fireman_life, self.new_fireman_rate)
 
     def count_condition(self, obj_class, condition_func):
         """Contagem de agentes com base em uma condição"""

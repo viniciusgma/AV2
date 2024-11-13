@@ -119,13 +119,17 @@ model_params = {
         0,
         20,
         1,  # Slider para a quantidade de nuvens (1 a 20)
-    ),"lightning_probability": mesa.visualization.Slider(
+    ),
+    "lightning_probability": mesa.visualization.Slider(
     "Lightning Probability", 0.25, 0.0, 1.0, 0.01), 
     
     "rain_probability": mesa.visualization.Slider(
     "Rain Probability", 0.25, 0.0, 1.0, 0.01
-),
-
+    ),
+    "fireman_life": mesa.visualization.Slider("Fireman life", 200, 0, 1000, 1),
+    "fireman_spawn_interval": mesa.visualization.Slider('Spawn time of fireman', 10, 1, 100, 1),
+    "how_many_initial_fireman": mesa.visualization.Slider("Quantity of initial fireman", 5, 0, 25, 1),
+    "new_fireman_rate": mesa.visualization.Slider("Quantity of new fireman", 1, 0, 15, 1),
 }
 
 # Criação do servidor modular, que integra a visualização e o modelo
