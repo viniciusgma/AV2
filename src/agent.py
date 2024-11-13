@@ -16,37 +16,32 @@ class Terra(mesa.Agent):
 class TreeCell(mesa.Agent):
     """
     Representa uma árvore que pode estar em diferentes estados, como saudável, pegando fogo ou queimada.
-
-    Atributos:
-        pos: Posições da árvore no modelo.
-        condition: Pode ser 'Fine' (saudável), 'On Fire' (pegando fogo) ou 'Burned Out' (queimada).
-        unique_id: Identificador único da árvore, baseado em suas coordenadas.
-
-    O objetivo é simular o crescimento e a propagação do fogo entre as árvores, afetando o estado delas.
     """
-
     def __init__(self, pos, model):
-        """
-        Cria uma nova árvora.
-
-        Args:
-            pos: A posição da árvore no modelo.
-            model: Referência ao modelo onde o agente está inserido.
-        """
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 1
+        self.condition = 1.0  # A árvore começa saudável
 
     def step(self):
         """
         Se a árvore está pegando fogo, ela espalha fogo para as árvores mais próximas.
+        A condição da árvore vai diminuindo conforme o fogo avança.
         """
-        if 0 < self.condition < 0.7:
-            for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                if neighbor.condition:
-                    neighbor.condition -= 0.1
-                    if 0 < neighbor.condition < 0.7:
-                        self.condition -= 0.1
+        if self.condition > 0:
+            if 0 < self.condition <= 0.7:
+                # A árvore está pegando fogo, espalha o fogo para os vizinhos
+                for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                    if isinstance(neighbor, TreeCell) and neighbor.condition > 0.7:
+                        neighbor.condition -= 0.1  # Espalha o fogo
+                        self.condition -= 0.05  # A árvore queima um pouco
+
+            elif self.condition > 0.7:
+                # A árvore está saudável e pode começar a pegar fogo
+                for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                        self.condition -= 0.02  # A árvore começa a ser afetada pelo fogo
+        else:
+            self.condition = 0  # Quando a árvore é queimada, sua condição vai a 0
 
 
 class Fireman(mesa.Agent):
