@@ -17,10 +17,12 @@ class TreeCell(mesa.Agent):
     """
     Representa uma árvore que pode estar em diferentes estados, como saudável, pegando fogo ou queimada.
     """
-    def __init__(self, pos, model):
+    def __init__(self, pos, model, burn_rate, fire_rate):
         super().__init__(pos, model)
         self.pos = pos
         self.condition = 1.0  # A árvore começa saudável
+        self.brn = burn_rate # Velocidade de queima
+        self.fire = fire_rate # Velocidade de propagação do fogo
 
     def step(self):
         """
@@ -32,19 +34,19 @@ class TreeCell(mesa.Agent):
                 # A árvore está saudável e pode começar a pegar fogo
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7 and neighbor.condition > 0.3:
-                        self.condition -= 0.05  # A árvore começa a ser afetada pelo fogo
+                        self.condition -= self.brn * 0.5  # A árvore começa a ser afetada pelo fogo
 
             elif 0.3 < self.condition <= 0.7:
                 # A árvore está pegando fogo, espalha o fogo para os vizinhos
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell) and neighbor.condition > 0.7:
-                        neighbor.condition -= 0.2  # Espalha o fogo
-                        self.condition -= 0.01  # A árvore queima um pouco
+                        neighbor.condition -= self.fire  # Espalha o fogo
+                        self.condition -= self.brn  # A árvore queima um pouco
                     else:
-                        self.condition -= 0.01
+                        self.condition -= self.brn
             else:
                 #arvore em cinzas
-                self.condition -= 0.01
+                self.condition -= self.brn
 
         else:
             self.condition = 0  # Quando a árvore é queimada, sua condição vai a 0

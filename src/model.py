@@ -15,12 +15,14 @@ class ForestFire(mesa.Model):
         how_many_rivers=1,
         fire_focus=5,  # número de focos de incêndio
         fireman_spawn_interval=10,  # Intervalo de tempo para criar novos bombeiros
-        fireman_life = 200,
+        fireman_life = 200, # Quantidade de vida dos bombeiros
         cloud_quantity=5,  # Novo parâmetro para o número de nuvens
         lightning_probability=0.25,  # Probabilidade de raio
         rain_probability=0.25,  # Probabilidade de chuva
-        how_many_initial_fireman = 5,
-        new_fireman_rate = 1,
+        how_many_initial_fireman = 5, # Quantidade de bombeiros gerados no início da simulação
+        new_fireman_rate = 1, # Quantidade de novos bombeiros que aparecem a cada intervalo
+        burn_rate = 0.1,
+        fire_propagation_rate = 0.2,
     ):
         """
         Create a new forest fire model.
@@ -63,7 +65,7 @@ class ForestFire(mesa.Model):
         for contents, (x, y) in self.grid.coord_iter():
             if self.random.random() < tree_density:
                 # Cria uma árvore
-                new_tree = TreeCell((x, y), self)
+                new_tree = TreeCell((x, y), self, burn_rate, fire_propagation_rate)
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree) 
             else:
@@ -120,8 +122,8 @@ class ForestFire(mesa.Model):
             fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
         )
         self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
-        self.fireman_life = fireman_life
-        self.new_fireman_rate = new_fireman_rate
+        self.fireman_life = fireman_life # Define a quantidade de vida dos bombeiros com base no slider
+        self.new_fireman_rate = new_fireman_rate # Define a quantidade de novos bombeiros que surgem a cada intervalo
 
     def create_clouds(self, cloud_quantity):
         """
