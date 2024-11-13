@@ -54,7 +54,7 @@ class Fireman(mesa.Agent):
     Classe para o bombeiro, que agora usa BFS para encontrar o fogo mais próximo.
     """
 
-    def __init__(self, pos, model):
+    def __init__(self, pos, model, life):
         """
         Cria um novo bombeiro.
 
@@ -64,7 +64,7 @@ class Fireman(mesa.Agent):
         """
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 200  # Vida do bombeiro
+        self.condition = life  # Vida do bombeiro
 
     def bfs_to_fire(self):
         """
@@ -147,7 +147,7 @@ class River(mesa.Agent):
         dq.append(self)
         visited = []
         if self.condition > 0:
-            while len(visited) <= 16:
+            while len(visited) <= 12:
                 current = dq.popleft()
                 dq.extend(current.model.grid.iter_neighbors(current.pos, True))
                 if current not in visited:
@@ -155,45 +155,50 @@ class River(mesa.Agent):
                 if current not in visited:
                     visited.append(current)
                 if isinstance(current, TreeCell) and current.condition < 0.7:
-                    current.condition += 0.3
+                    current.condition += 0.1
                 elif isinstance(current, River) and current.condition < 0.7:
                     current.condition += 0.05
 
 
 class cloud(mesa.Agent):
     """
-    A nuvem possui duas ações possiveis:
+    A nuvem possui duas ações possíveis:
 
     lightning - joga um raio exatamente na árvore da mesma célula, fazendo ela pegar fogo
-    rain - faz chover em um raio específico, aumentando a vida de todas
+    rain - faz chover em um raio específico, aumentando a vida de todas as árvores
     e fazendo o fogo parar se existir.
-
     """
 
     def __init__(self, pos, model):
         super().__init__(pos, model)
         self.pos = pos
         self.condition = 2000
+        # Recupera as probabilidades de raio e chuva do modelo
+        self.lightning_probability = model.lightning_probability
+        self.rain_probability = model.rain_probability
 
     def step(self):
         """
-
-        Joga um raio em um raio de 1 grid. 20% de chance de ocorrer
-
+        Joga um raio ou chuva baseado nas probabilidades definidas pelo usuário.
         """
-        num = random.randint(1, 20)
-        if num <= 5:
+
+        num = random.random()  # Gera um número aleatório entre 0 e 1
+        if num <= self.lightning_probability:
+            # Se a probabilidade para raio for atendida, um raio cai em uma árvore
             if self.condition > 0:
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell):
-                        neighbor.condition = 0.6  # coloca arvore em fogo
+                        neighbor.condition = 0.6  # Coloca a árvore em fogo
 
-        else:
+        elif num <= self.lightning_probability + self.rain_probability:
+            # Se a probabilidade para chuva for atendida, faz chover
             radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=2)
             for coisa in radius:
                 if isinstance(coisa, TreeCell):
+                    coisa.condition += 1  # Aumenta a condição da árvore
+                    self.condition -= 0.1  # Diminui a condição da nuvem
+                elif isinstance(coisa, River):
                     coisa.condition += 1
-                    self.condition -= 0.1
 
 
 class Nuvens(mesa.agent.AgentSet):
