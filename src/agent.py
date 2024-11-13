@@ -54,7 +54,7 @@ class Fireman(mesa.Agent):
     Classe para o bombeiro, que agora usa BFS para encontrar o fogo mais próximo.
     """
 
-    def __init__(self, pos, model):
+    def __init__(self, pos, model, life):
         """
         Cria um novo bombeiro.
 
@@ -64,7 +64,7 @@ class Fireman(mesa.Agent):
         """
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 200  # Vida do bombeiro
+        self.condition = life  # Vida do bombeiro
 
     def bfs_to_fire(self):
         """
