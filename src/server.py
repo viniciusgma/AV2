@@ -22,10 +22,11 @@ def get_tree_color(condition):
 
     if condition >= 0.7:  # Árvore saudável (verde)
         r = 0
-        g = int(255 * (1 - (condition - 0.7) / 0.3))  # De verde para amarelo
+        g = int(220 * (condition - 0.7)/ 0.3) # De verde para amarelo
         b = 0
     elif condition > 0.3:  # Árvore pegando fogo (vermelho)
-        r = int(255 * (1 - (condition - 0.3) / 0.4))  # De amarelo para vermelho
+        r = int(220 * ((condition - 0.3) / 0.4))  # De amarelo para vermelho
+        #r = 220
         g = 0
         b = 0
     else:  # Árvore queimada (preto)
@@ -114,7 +115,7 @@ model_params = {
     # Adicionando o controle de nuvens (quantidade)
     "cloud_quantity": mesa.visualization.Slider(
         "Cloud quantity",
-        2,
+        0,
         0,
         20,
         1,  # Slider para a quantidade de nuvens (1 a 20)

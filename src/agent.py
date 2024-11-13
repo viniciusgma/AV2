@@ -28,18 +28,24 @@ class TreeCell(mesa.Agent):
         A condição da árvore vai diminuindo conforme o fogo avança.
         """
         if self.condition > 0:
-            if 0 < self.condition <= 0.7:
+            if self.condition >= 0.7:
+                # A árvore está saudável e pode começar a pegar fogo
+                for neighbor in self.model.grid.iter_neighbors(self.pos, True):
+                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7 and neighbor.condition > 0.3:
+                        self.condition -= 0.05  # A árvore começa a ser afetada pelo fogo
+
+            elif 0.3 < self.condition <= 0.7:
                 # A árvore está pegando fogo, espalha o fogo para os vizinhos
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell) and neighbor.condition > 0.7:
-                        neighbor.condition -= 0.1  # Espalha o fogo
-                        self.condition -= 0.05  # A árvore queima um pouco
+                        neighbor.condition -= 0.2  # Espalha o fogo
+                        self.condition -= 0.01  # A árvore queima um pouco
+                    else:
+                        self.condition -= 0.01
+            else:
+                #arvore em cinzas
+                self.condition -= 0.01
 
-            elif self.condition > 0.7:
-                # A árvore está saudável e pode começar a pegar fogo
-                for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                        self.condition -= 0.02  # A árvore começa a ser afetada pelo fogo
         else:
             self.condition = 0  # Quando a árvore é queimada, sua condição vai a 0
 
@@ -111,7 +117,7 @@ class Fireman(mesa.Agent):
             # Apaga o fogo e reduz a vida do bombeiro
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                 if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                    neighbor.condition += 0.2  # Apaga um pouco o fogo
+                    neighbor.condition += 0.3  # Apaga um pouco o fogo
                     self.condition -= 0.1  # Bombeiro perde vida
 
         # Se não há fogo encontrado, move-se aleatoriamente
