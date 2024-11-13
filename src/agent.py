@@ -17,10 +17,11 @@ class TreeCell(mesa.Agent):
     """
     Representa uma árvore que pode estar em diferentes estados, como saudável, pegando fogo ou queimada.
     """
-    def __init__(self, pos, model, burn_rate, fire_rate):
+    def __init__(self, pos, model, burn_rate, fire_rate, life):
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 1.0  # A árvore começa saudável
+        self.condition = life  # A árvore começa saudável
+        self.life = life # Quantidade total de vida para referência
         self.brn = burn_rate # Velocidade de queima
         self.fire = fire_rate # Velocidade de propagação do fogo
 
@@ -30,16 +31,16 @@ class TreeCell(mesa.Agent):
         A condição da árvore vai diminuindo conforme o fogo avança.
         """
         if self.condition > 0:
-            if self.condition >= 0.7:
+            if self.condition >= 0.7 * self.life:
                 # A árvore está saudável e pode começar a pegar fogo
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7 and neighbor.condition > 0.3:
+                    if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7 * self.life and neighbor.condition > 0.3 * self.life:
                         self.condition -= self.brn * 0.5  # A árvore começa a ser afetada pelo fogo
 
-            elif 0.3 < self.condition <= 0.7:
+            elif 0.3 * self.life < self.condition <= 0.7 * self.life:
                 # A árvore está pegando fogo, espalha o fogo para os vizinhos
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                    if isinstance(neighbor, TreeCell) and neighbor.condition > 0.7:
+                    if isinstance(neighbor, TreeCell) and neighbor.condition > 0.7 * self.life:
                         neighbor.condition -= self.fire  # Espalha o fogo
                         self.condition -= self.brn  # A árvore queima um pouco
                     else:
@@ -57,7 +58,7 @@ class Fireman(mesa.Agent):
     Classe para o bombeiro, que agora usa BFS para encontrar o fogo mais próximo.
     """
 
-    def __init__(self, pos, model, life):
+    def __init__(self, pos, model, life, tree_life):
         """
         Cria um novo bombeiro.
 
@@ -68,6 +69,7 @@ class Fireman(mesa.Agent):
         super().__init__(pos, model)
         self.pos = pos
         self.condition = life  # Vida do bombeiro
+        self.tree_life = tree_life
 
     def bfs_to_fire(self):
         """
@@ -89,7 +91,7 @@ class Fireman(mesa.Agent):
                     queue.append(neighbor.pos)
 
                     # Se a célula do vizinho for uma árvore em fogo
-                    if isinstance(neighbor, TreeCell) and 0 < neighbor.condition < 0.7:
+                    if isinstance(neighbor, TreeCell) and 0 < neighbor.condition < 0.7 * self.tree_life:
                         return (
                             neighbor.pos
                         )  # Retorna a posição da árvore em fogo mais próxima
@@ -118,7 +120,7 @@ class Fireman(mesa.Agent):
 
             # Apaga o fogo e reduz a vida do bombeiro
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
+                if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7 * self.tree_life:
                     neighbor.condition += 0.3  # Apaga um pouco o fogo
                     self.condition -= 0.1  # Bombeiro perde vida
 
@@ -157,8 +159,8 @@ class River(mesa.Agent):
                     visited.append(current)
                 if current not in visited:
                     visited.append(current)
-                if isinstance(current, TreeCell) and current.condition < 0.7:
-                    current.condition += 0.3
+                if isinstance(current, TreeCell) and current.condition < 0.7 * current.life:
+                    current.condition += 0.3 * current.life
                 elif isinstance(current, River) and current.condition < 0.7:
                     current.condition += 0.05
 
@@ -198,7 +200,7 @@ class cloud(mesa.Agent):
             radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=2)
             for coisa in radius:
                 if isinstance(coisa, TreeCell):
-                    coisa.condition += 1  # Aumenta a condição da árvore
+                    coisa.condition += coisa.life  # Aumenta a condição da árvore
                     self.condition -= 0.1  # Diminui a condição da nuvem
 
 
