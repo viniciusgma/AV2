@@ -13,6 +13,7 @@ COLORS = {
     "Terra": "#E5AA70",  # Cor de terra
 }
 
+
 def multi_agent_portrayal(agent):
     """
     Função para representar visualmente os agentes no grid. Dependendo do tipo de agente,
@@ -46,12 +47,16 @@ def multi_agent_portrayal(agent):
 
     # Representação do agente Fireman
     elif isinstance(agent, Fireman):
-        portrayal["Color"] = COLORS["Fireman"] if float(agent.condition) > 0 else "#000000"
+        portrayal["Color"] = (
+            COLORS["Fireman"] if float(agent.condition) > 0 else "#000000"
+        )
         portrayal["Layer"] = 2
 
     # Representação do agente River
     elif isinstance(agent, River):
-        portrayal["Color"] = COLORS["River"] if float(agent.condition) > 0 else "#000000"
+        portrayal["Color"] = (
+            COLORS["River"] if float(agent.condition) > 0 else "#000000"
+        )
         portrayal["Layer"] = 3
 
     # Representação do agente Cloud
@@ -65,7 +70,9 @@ def multi_agent_portrayal(agent):
 
 
 # Configuração do CanvasGrid para visualização dos agentes
-canvas_element = mesa.visualization.CanvasGrid(multi_agent_portrayal, 100, 100, 500, 500)
+canvas_element = mesa.visualization.CanvasGrid(
+    multi_agent_portrayal, 100, 100, 500, 500
+)
 
 # Configuração do gráfico de barras para visualização do estado das árvores
 tree_chart = mesa.visualization.ChartModule(
@@ -81,20 +88,21 @@ pie_chart = mesa.visualization.PieChartModule(
 model_params = {
     "height": 100,
     "width": 100,
-    "tree_density": mesa.visualization.Slider(
-        "Tree density", 0.8, 0.01, 1.0, 0.01
-    ),
+    "tree_density": mesa.visualization.Slider("Tree density", 0.8, 0.01, 1.0, 0.01),
     "how_many_rivers": mesa.visualization.Choice(
         "How many rivers", value=1, choices=[0, 1, 2, 3]
     ),
     "fire_focus": mesa.visualization.Slider(
         "Number of fire focuses", 5, 1, 20, 1
     ),  # Usuário pode escolher o número de focos de incêndio (1 a 20)
-    
     # Adicionando o controle de nuvens (quantidade)
     "cloud_quantity": mesa.visualization.Slider(
-        "Cloud quantity", 5, 1, 20, 1  # Slider para a quantidade de nuvens (1 a 20)
-    )
+        "Cloud quantity",
+        2,
+        1,
+        20,
+        1,  # Slider para a quantidade de nuvens (1 a 20)
+    ),
 }
 
 # Criação do servidor modular, que integra a visualização e o modelo
