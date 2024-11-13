@@ -178,7 +178,7 @@ class cloud(mesa.Agent):
     def step(self):
         """
 
-        Joga um raio em um raio de 1 grid. 5% de chance de ocorrer
+        Joga um raio em um raio de 1 grid. 20% de chance de ocorrer
 
         """
         num = random.randint(1, 20)
@@ -186,14 +186,9 @@ class cloud(mesa.Agent):
             if self.condition > 0:
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell):
-                        neighbor.condition = 0.699  # coloca arvore em fogo
+                        neighbor.condition = 0.6  # coloca arvore em fogo
 
-        """
-
-        Raio da chuva de 5 grids.
-
-        """
-        if self.condition > 0:
+        else:
             radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=2)
             for coisa in radius:
                 if isinstance(coisa, TreeCell):
