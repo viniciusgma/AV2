@@ -157,38 +157,41 @@ class River(mesa.Agent):
 
 class cloud(mesa.Agent):
     """
-    A nuvem possui duas ações possiveis:
+    A nuvem possui duas ações possíveis:
 
     lightning - joga um raio exatamente na árvore da mesma célula, fazendo ela pegar fogo
-    rain - faz chover em um raio específico, aumentando a vida de todas
+    rain - faz chover em um raio específico, aumentando a vida de todas as árvores
     e fazendo o fogo parar se existir.
-
     """
 
     def __init__(self, pos, model):
         super().__init__(pos, model)
         self.pos = pos
         self.condition = 2000
+        # Recupera as probabilidades de raio e chuva do modelo
+        self.lightning_probability = model.lightning_probability
+        self.rain_probability = model.rain_probability
 
     def step(self):
         """
-
-        Joga um raio em um raio de 1 grid. 25% de chance de ocorrer
-
+        Joga um raio ou chuva baseado nas probabilidades definidas pelo usuário.
         """
-        num = random.randint(1, 20)
-        if num <= 5:
+
+        num = random.random()  # Gera um número aleatório entre 0 e 1
+        if num <= self.lightning_probability:
+            # Se a probabilidade para raio for atendida, um raio cai em uma árvore
             if self.condition > 0:
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell):
-                        neighbor.condition = 0.6  # coloca arvore em fogo
+                        neighbor.condition = 0.6  # Coloca a árvore em fogo
 
-        else:
+        elif num <= self.lightning_probability + self.rain_probability:
+            # Se a probabilidade para chuva for atendida, faz chover
             radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=2)
             for coisa in radius:
                 if isinstance(coisa, TreeCell):
-                    coisa.condition += 1
-                    self.condition -= 0.1
+                    coisa.condition += 1  # Aumenta a condição da árvore
+                    self.condition -= 0.1  # Diminui a condição da nuvem
 
 
 class Nuvens(mesa.agent.AgentSet):

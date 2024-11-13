@@ -118,7 +118,13 @@ model_params = {
         0,
         20,
         1,  # Slider para a quantidade de nuvens (1 a 20)
-    ),
+    ),"lightning_probability": mesa.visualization.Slider(
+    "Lightning Probability", 0.25, 0.0, 1.0, 0.01), 
+    
+    "rain_probability": mesa.visualization.Slider(
+    "Rain Probability", 0.25, 0.0, 1.0, 0.01
+),
+
 }
 
 # Criação do servidor modular, que integra a visualização e o modelo
