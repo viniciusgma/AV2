@@ -1,7 +1,6 @@
 import mesa
-from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens
 import random
-
+from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens
 
 class ForestFire(mesa.Model):
     """
@@ -18,8 +17,11 @@ class ForestFire(mesa.Model):
         fireman_spawn_interval=10,  # Intervalo de tempo para criar novos bombeiros
         fireman_life = 200,
         cloud_quantity=5,  # Novo parâmetro para o número de nuvens
+        lightning_probability=0.25,  # Probabilidade de raio
+        rain_probability=0.25,  # Probabilidade de chuva
         how_many_initial_fireman = 5,
-        new_fireman_rate = 1
+        new_fireman_rate = 1,
+        fireman_life = 200
     ):
         """
         Create a new forest fire model.
@@ -32,6 +34,10 @@ class ForestFire(mesa.Model):
         # Set up model objects
         self.schedule = mesa.time.RandomActivation(self)
         self.grid = mesa.space.MultiGrid(width, height, torus=False)
+
+        # Configura as probabilidades de raio e chuva
+        self.lightning_probability = lightning_probability
+        self.rain_probability = rain_probability
 
         self.datacollector = mesa.DataCollector(
             {
@@ -54,10 +60,10 @@ class ForestFire(mesa.Model):
             }
         )
 
-        # Place a tree in each cell with Prob = density
+        # Coloca as árvores no grid
         for contents, (x, y) in self.grid.coord_iter():
             if self.random.random() < tree_density:
-                # Create a tree
+                # Cria uma árvore
                 new_tree = TreeCell((x, y), self)
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
@@ -96,15 +102,15 @@ class ForestFire(mesa.Model):
                 center_y += random.choice([-1, 0, 1])
                 radius += random.choice(increase_radius)
 
-        # adiciona os focos de incêndio
+        # Adiciona os focos de incêndio
         trees_on_fire = random.sample(
             [agent for agent in self.schedule.agents if isinstance(agent, TreeCell)],
             fire_focus,
         )
         for tree in trees_on_fire:
-            tree.condition = 0.6  # Define condição de "On Fire" da árvore p/ pegar fogo
+            tree.condition = 0.6  # Define condição de "On Fire" para as árvores
 
-        # adicionar nuvens com base no valor do slider
+        # Adicionar nuvens com base no valor do slider
         self.create_clouds(cloud_quantity)
 
         self.running = True
@@ -120,7 +126,6 @@ class ForestFire(mesa.Model):
         """
         Cria o número de nuvens baseado no valor fornecido pelo usuário no slider.
         """
-
         self.nuvens = []
         for _ in range(cloud_quantity):  # Cloud quantity agora é o número de nuvens
             nuvens = []
@@ -172,11 +177,11 @@ class ForestFire(mesa.Model):
         if self.step_count % self.fireman_spawn_interval == 0:
             self.spawn_fireman(200, 1) # TODO: Mandar os parâmetros
 
-    def count_condition(model, obj_class, condition_func):
+    def count_condition(self, obj_class, condition_func):
         """Contagem de agentes com base em uma condição"""
         count = sum(
             1
-            for agent in model.schedule.agents
+            for agent in self.schedule.agents
             if isinstance(agent, obj_class) and condition_func(agent.condition)
         )
         return count
