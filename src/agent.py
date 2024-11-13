@@ -227,3 +227,14 @@ class Nuvens(mesa.agent.AgentSet):
                 nuvem, grid4x4[i]
             )  # Move a nuvem para a posição
             nuvem.step()  # Executa o passo da nuvem
+
+
+class Birds(mesa.Agent):
+    """
+    Pássaros voam em bando e espalham sementes na área queimada.
+    """
+
+    def __init__(self, pos, model):
+        super().__init__(pos, model)
+        self.pos = pos
+        # Implementar condition
