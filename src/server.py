@@ -99,7 +99,7 @@ model_params = {
     "cloud_quantity": mesa.visualization.Slider(
         "Cloud quantity",
         2,
-        1,
+        0,
         20,
         1,  # Slider para a quantidade de nuvens (1 a 20)
     ),
