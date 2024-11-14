@@ -320,7 +320,7 @@ class Birds(mesa.Agent):
             # Se o pássaro está próximo de uma árvore em chamas, ele perde vida
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                 if isinstance(neighbor, TreeCell) and neighbor.condition < 0.7:
-                    self.condition -= 2  # Perde vida ao passar pelo fogo
+                    self.condition -= 0.8  # Perde vida ao passar pelo fogo
 
             # Transformação de terra em árvore
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
@@ -329,7 +329,7 @@ class Birds(mesa.Agent):
                     self.model.grid.place_agent(new_tree, neighbor.pos)  # Coloca a árvore
                     self.model.grid.remove_agent(neighbor)  # Remove a terra
                     self.model.schedule.add(new_tree)  # Adiciona a nova árvore ao agendamento
-                    self.condition -= 0.1  # Perde vida ao transformar terra em árvore
+                    self.condition -= 0.01  # Perde vida ao transformar terra em árvore
 
         # Se não há terra, move-se aleatoriamente
         else:
