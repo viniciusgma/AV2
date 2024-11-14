@@ -256,12 +256,12 @@ class Nuvens(mesa.agent.AgentSet):
             )  # Move a nuvem para a posição
             nuvem.step()  # Executa o passo da nuvem
 
-class Bird(mesa.Agent):
+class Birds(mesa.Agent):
     """
-    Classe Bird que representa os pássaros responsáveis por regenerar terra.
+    Classe Birds que representa os pássaros responsáveis por regenerar terra.
     """
 
-    def __init__(self, pos, model):
+    def __init__(self, pos, model, life, tree_life):
         """ 
         Inicia o pássaro.
 
@@ -271,7 +271,8 @@ class Bird(mesa.Agent):
         """
         super().__init__(pos, model)
         self.pos = pos
-        self.condition = 100  # Vida do passaro
+        self.condition = life  # Vida do passaro
+        self.tree_life = tree_life
 
     def bfs_to_land(self):
         """
