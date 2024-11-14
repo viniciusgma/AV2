@@ -1,5 +1,5 @@
 import mesa
-from .agent import TreeCell, Fireman, River, Terra, cloud
+from .agent import TreeCell, Fireman, River, Terra, cloud, Bird
 from .model import ForestFire
 
 # Dicionário de cores para os diferentes estados dos agentes
@@ -11,6 +11,7 @@ COLORS = {
     "Fireman": "#FFFF00",  # Amarelo para bombeiro
     "cloud": "#FFFFFF",  # Branco para nuvem
     "Terra": "#E5AA70",  # Cor de terra
+    "Bird": "#0000FF", # Azul escuro para pássaro
 }
 
 def get_tree_color(condition):
@@ -78,6 +79,11 @@ def multi_agent_portrayal(agent):
     # Representação do agente Cloud
     elif isinstance(agent, cloud):
         portrayal["Color"] = COLORS["cloud"]
+        portrayal["Layer"] = 4
+
+    # Representação do agente Bird
+    elif isinstance(agent, Bird):
+        portrayal["Color"] = COLORS["Bird"] if float(agent.condition) > 0 else "#000000"
         portrayal["Layer"] = 4
 
     # Definindo as posições no grid

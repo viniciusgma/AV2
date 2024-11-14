@@ -1,6 +1,6 @@
 import mesa
 import random
-from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens
+from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens, Bird
 
 class ForestFire(mesa.Model):
     """
@@ -24,6 +24,7 @@ class ForestFire(mesa.Model):
         burn_rate = 0.1,
         fire_propagation_rate = 0.2,
         tree_life = 1.0,
+        how_many_birds = 20,
     ):
         """
         Create a new forest fire model.
@@ -58,7 +59,10 @@ class ForestFire(mesa.Model):
                 "Rivers": lambda model: model.count_condition(
                     River, lambda c: float(c) > 0
                 ),
-                "Terra": lambda model: model.count_condition(Terra, lambda c: True),
+                "Terra": lambda model: model.count_condition(
+                    Terra, lambda c: True
+                ),
+                "Bird": lambda model: model.count_condition(Bird, lambda c: float(c) > 0),
             }
         )
 
@@ -70,7 +74,7 @@ class ForestFire(mesa.Model):
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree) 
             else:
-                new_terra = Terra((x, y), self)
+                new_terra = Terra((x, y), self, burn_rate, fire_propagation_rate, tree_life)
                 self.grid.place_agent(new_terra, (x, y))
 
         # Coloca os bombeiros   
@@ -80,6 +84,13 @@ class ForestFire(mesa.Model):
             new_fireman = Fireman(pos, self, fireman_life, tree_life)
             self.grid.place_agent(new_fireman, pos)
             self.schedule.add(new_fireman)
+
+        # Coloca os pássaros
+        for i in range(how_many_birds):
+            pos = (random.randint(0, self.grid.width - 1), random.randint(0, self.grid.height - 1))
+            bird = Bird(pos, self)
+            self.grid.place_agent(bird, pos)
+            self.schedule.add(bird)
 
         # Coloca os rios
         for rio in range(how_many_rivers):
