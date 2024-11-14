@@ -130,6 +130,9 @@ model_params = {
     "fireman_spawn_interval": mesa.visualization.Slider('Spawn time of fireman', 10, 1, 100, 1),
     "how_many_initial_fireman": mesa.visualization.Slider("Quantity of initial fireman", 5, 0, 25, 1),
     "new_fireman_rate": mesa.visualization.Slider("Quantity of new fireman", 1, 0, 15, 1),
+    "burn_rate": mesa.visualization.Slider("Burn rate of the trees", 0.01, 0, 1, 0.001),
+    "fire_propagation_rate": mesa.visualization.Slider("Fire propagation rate between trees", 0.2, 0, 1, 0.001),
+    "tree_life": mesa.visualization.Slider("Life of the trees", 1, 0, 100, 0.1),
 }
 
 # Criação do servidor modular, que integra a visualização e o modelo
