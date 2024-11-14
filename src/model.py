@@ -21,10 +21,10 @@ class ForestFire(mesa.Model):
         rain_probability=0.25,  # Probabilidade de chuva
         how_many_initial_fireman = 5, # Quantidade de bombeiros gerados no início da simulação
         new_fireman_rate = 1, # Quantidade de novos bombeiros que aparecem a cada intervalo
-        burn_rate = 0.1,
-        fire_propagation_rate = 0.2,
-        tree_life = 1.0,
-        how_many_birds = 20,
+        burn_rate = 0.1, # Intensidade do fogo
+        fire_propagation_rate = 0.2, # Velocidade de propagação do fogo
+        tree_life = 1.0, # Quantidade de vida das árvores
+        how_many_birds = 20, # Quantidade inicial de pássaros
         birds_spawn_interval = 10,  # Intervalo de tempo para criar novos pássaros
         birds_life = 100, # Quantidade de vida dos pássaro
         new_birds_rate = 1, # Quantidade de novos pássaros que aparecem a cada intervalo
@@ -142,10 +142,10 @@ class ForestFire(mesa.Model):
         self.tree_life = tree_life
 
         # Configurações para criação automática de pássaros
-        self.birds_spawn_interval = birds_spawn_interval  # Intervalo de tempo para criar novos bombeiros
-        self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
-        self.bird_life = birds_life # Define a quantidade de vida dos bombeiros com base no slider
-        self.new_birds_rate = new_birds_rate # Define a quantidade de novos bombeiros que surgem a cada intervalo
+        self.birds_spawn_interval = birds_spawn_interval  # Intervalo de tempo para criar novos pássaros
+        self.step_count = 0  # Contador de passos para controlar a criação de pássaros
+        self.bird_life = birds_life # Define a quantidade de vida dos pássaros com base no slider
+        self.new_birds_rate = new_birds_rate # Define a quantidade de novos pássaros que surgem a cada intervalo
 
     def create_clouds(self, cloud_quantity):
         """
