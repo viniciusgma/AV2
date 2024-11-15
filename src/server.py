@@ -1,6 +1,7 @@
 import mesa
 from .agent import TreeCell, Fireman, River, Terra, cloud, Birds
 from .model import ForestFire
+from pathlib import Path
 
 
 # Dicionário de cores para os diferentes estados dos agentes
@@ -192,4 +193,10 @@ server = mesa.visualization.ModularServer(
 
 server.page_handler = (r"/", CustomPageHandler)
 
-server.settings["template_path"] = "template"
+current_file_path = Path(__file__).resolve()
+parent_dir = current_file_path.parent.parent
+
+# server.settings["template_path"] = "/Av2-Prog2/template"
+
+template_path = parent_dir / "template"
+server.settings["template_path"] = str(template_path)

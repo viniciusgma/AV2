@@ -106,7 +106,7 @@ class Fireman(mesa.Agent):
                     # Se a célula do vizinho for uma árvore em fogo
                     if (
                         isinstance(neighbor, TreeCell)
-                        and 0 < neighbor.condition < 0.7 * self.tree_life
+                        and 0.3 < neighbor.condition < 0.7 * self.tree_life
                     ):
                         return (
                             neighbor.pos
@@ -139,6 +139,7 @@ class Fireman(mesa.Agent):
                 if (
                     isinstance(neighbor, TreeCell)
                     and neighbor.condition < 0.7 * self.tree_life
+                    and neighbor.condition > 0.3 * self.tree_life
                 ):
                     neighbor.condition += 0.3  # Apaga um pouco o fogo
                     self.condition -= 0.1  # Bombeiro perde vida
