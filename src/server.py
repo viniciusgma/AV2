@@ -2,6 +2,7 @@ import mesa
 from .agent import TreeCell, Fireman, River, Terra, cloud, Birds
 from .model import ForestFire
 
+
 # Dicionário de cores para os diferentes estados dos agentes
 COLORS = {
     "Fine": "#00AA00",  # Verde para árvore saudável
@@ -165,15 +166,30 @@ model_params = {
     "new_birds_rate": mesa.visualization.Slider("Quantity of new fireman", 1, 0, 15, 1),
 }
 
+
+class CustomPageHandler(mesa.visualization.PageHandler):
+    def get(self):
+        elements = self.application.visualization_elements
+        for i, element in enumerate(elements):
+            element.index = i
+        self.render(
+            "template.html",
+            port=self.application.port,
+            model_name=self.application.model_name,
+            description=self.application.description,
+            package_js_includes=list(self.application.package_js_includes.keys()),
+            package_css_includes=list(self.application.package_css_includes.keys()),
+            local_js_includes=list(self.application.local_js_includes.keys()),
+            local_css_includes=list(self.application.local_css_includes.keys()),
+            scripts=self.application.js_code,
+        )
+
+
 # Criação do servidor modular, que integra a visualização e o modelo
 server = mesa.visualization.ModularServer(
     ForestFire, [canvas_element, tree_chart, pie_chart], "Forest Fire", model_params
 )
 
-server.description = (  # por enquanto o \n não funciona
-    "Modelo Forest Fire da biblioteca Mesa: \n\n"
-    "Lider: Vinicius Glowacki Maciel \n\n"
-    "Equipe de Implementação: Gabriel Ferreira Silva, João Henrique Martins de Lima e Silva, Marcos Abílio Esmeraldo Melo, Richard Elias Soares Viana, Vinicius Glowacki Maciel \n\n"
-    "Equipe de Visualização: Arthur Silva de Vasconcelos, Italo da Silva Santos, Igor Augusto Zwirtes, Jhonatas David de Lima Santos\n\n"
-    "Equipe de Documentação: José Vitor Silva Model, Pedro Miguel Rocha Santos\n\n"
-)
+server.page_handler = (r"/", CustomPageHandler)
+
+server.settings["template_path"] = "template"
