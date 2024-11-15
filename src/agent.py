@@ -223,15 +223,50 @@ class cloud(mesa.Agent):
                 for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                     if isinstance(neighbor, TreeCell):
                         neighbor.condition = 0.6  # Coloca a árvore em fogo
-
         elif num <= self.lightning_probability + self.rain_probability:
             # Se a probabilidade para chuva for atendida, faz chover
-            radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=2)
+            radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=3)
             for coisa in radius:
-                if isinstance(coisa, TreeCell):
-                    coisa.condition += coisa.life  # Aumenta a condição da árvore
+                if (
+                    isinstance(coisa, TreeCell) and coisa.condition > 0.7
+                ):  # arvore normal
+                    coisa.condition += 0.1  # Aumenta a condição da árvore
                     self.condition -= 0.1  # Diminui a condição da nuvem
-                elif isinstance(coisa, River):
+                if (
+                    isinstance(coisa, TreeCell) and coisa.condition > 0.3
+                ):  # arvore em chamas, joga agua para apagar o fogo
+                    coisa.condition = 0  # Aumenta a condição da árvore
+                    self.condition -= 0.1  # Diminui a condição da nuvem
+                elif (
+                    isinstance(coisa, TreeCell) and coisa.condition < 0.3
+                ):  # Árvore em cinzas
+                    if (
+                        coisa is not None
+                        and hasattr(coisa, "pos")
+                        and coisa.pos is not None
+                    ):
+                        posit = (coisa.pos[0], coisa.pos[1])
+                        print(posit)
+                        # Remove a árvore queimada
+                        self.model.grid.remove_agent(coisa)
+                        # Cria uma nova célula de terra na mesma posição
+                        new_terra = Terra(
+                            pos=coisa.pos,  # Passa a posição diretamente
+                            model=self.model,
+                            burn_rate=coisa.brn,
+                            fire_rate=coisa.fire,
+                            life=coisa.life,
+                        )
+                        # Adiciona a terra no grid
+                        self.model.grid.place_agent(new_terra, posit)
+                        self.model.schedule.add(
+                            new_terra
+                        )  # Adiciona à programação do modelo
+                    else:
+                        print(f"Erro ao processar TreeCell inválido: {coisa}")
+                elif isinstance(
+                    coisa, River
+                ):  # coloca agua no rio, aumentando a vida do mesmo
                     coisa.condition += 1
 
 
