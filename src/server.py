@@ -171,9 +171,11 @@ server = mesa.visualization.ModularServer(
 )
 
 server.description = (  # por enquanto o \n não funciona
-    "Modelo Forest Fire da biblioteca Mesa: \n\n"
-    "Lider: Vinicius Glowacki Maciel \n\n"
-    "Equipe de Implementação: Gabriel Ferreira Silva, João Henrique Martins de Lima e Silva, Marcos Abílio Esmeraldo Melo, Richard Elias Soares Viana, Vinicius Glowacki Maciel \n\n"
-    "Equipe de Visualização: Arthur Silva de Vasconcelos, Italo da Silva Santos, Igor Augusto Zwirtes, Jhonatas David de Lima Santos\n\n"
+    "Modelo Forest Fire da biblioteca Mesa: _____________________________________________________ "
+    "Lider: Vinicius Glowacki Maciel ____________________________________________________________ "
+    "Equipe de Implementação: Gabriel Ferreira Silva, João Henrique Martins de Lima e Silva, Marcos Abílio "
+    "Esmeraldo Melo, Richard Elias Soares Viana, Vinicius Glowacki Maciel ___________________________ "
+    "Equipe de Visualização: Arthur Silva de Vasconcelos, Italo da Silva Santos, Igor Augusto Zwirtes, Jho-"
+    "natas David de Lima Santos _______________________________________________________________ "
     "Equipe de Documentação: José Vitor Silva Model, Pedro Miguel Rocha Santos\n\n"
 )
