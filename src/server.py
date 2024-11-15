@@ -121,50 +121,48 @@ pie_chart = mesa.visualization.PieChartModule(
 model_params = {
     "height": 100,
     "width": 100,
-    "tree_density": mesa.visualization.Slider("Tree density", 0.8, 0.01, 1.0, 0.01),
+    "tree_density": mesa.visualization.Slider(
+        "Densidade de árvores", 0.8, 0.01, 1.0, 0.01
+    ),
     "how_many_rivers": mesa.visualization.Choice(
-        "How many rivers", value=1, choices=[0, 1, 2, 3]
+        "Qtd de Rios", value=1, choices=[0, 1, 2, 3]
     ),
     "fire_focus": mesa.visualization.Slider(
-        "Number of fire focuses", 5, 1, 20, 1
+        "Qtd de Focos de Incêndio", 5, 1, 20, 1
     ),  # Usuário pode escolher o número de focos de incêndio (1 a 20)
     # Adicionando o controle de nuvens (quantidade)
     "cloud_quantity": mesa.visualization.Slider(
-        "Cloud quantity",
+        "Qtd de Nuvens",
         0,
         0,
         20,
         1,  # Slider para a quantidade de nuvens (1 a 20)
     ),
     "lightning_probability": mesa.visualization.Slider(
-        "Lightning Probability", 0.25, 0.0, 1.0, 0.01
+        "Probabilidade de Raio", 0.25, 0.0, 1.0, 0.01
     ),
     "rain_probability": mesa.visualization.Slider(
-        "Rain Probability", 0.25, 0.0, 1.0, 0.01
+        "Probabilidade de Chuva", 0.25, 0.0, 1.0, 0.01
     ),
-    "fireman_life": mesa.visualization.Slider("Fireman life", 200, 0, 1000, 1),
+    "fireman_life": mesa.visualization.Slider("Vida Bombeiro", 200, 0, 1000, 1),
     "fireman_spawn_interval": mesa.visualization.Slider(
-        "Spawn time of fireman", 10, 1, 100, 1
+        "Intervalo Spawn Bombeiro", 10, 1, 100, 1
     ),
     "how_many_initial_fireman": mesa.visualization.Slider(
-        "Quantity of initial fireman", 5, 0, 25, 1
+        "Qtd Inicial Bombeiros", 5, 0, 25, 1
     ),
-    "new_fireman_rate": mesa.visualization.Slider(
-        "Quantity of new fireman", 1, 0, 15, 1
-    ),
+    "new_fireman_rate": mesa.visualization.Slider("Qtd Novos Bombeiros", 1, 0, 15, 1),
     "burn_rate": mesa.visualization.Slider("Burn rate of the trees", 0.01, 0, 1, 0.001),
     "fire_propagation_rate": mesa.visualization.Slider(
-        "Fire propagation rate between trees", 0.2, 0, 1, 0.001
+        "Taxa Propagação do fogo entre Árvores", 0.2, 0, 1, 0.001
     ),
-    "tree_life": mesa.visualization.Slider("Life of the trees", 1, 0, 100, 0.1),
-    "how_many_birds": mesa.visualization.Slider(
-        "Quantity of initial fireman", 20, 0, 60, 1
-    ),
+    "tree_life": mesa.visualization.Slider("Vida das Árvores", 1, 0, 100, 0.1),
+    "how_many_birds": mesa.visualization.Slider("Qtd de Pássaro", 20, 0, 60, 1),
     "birds_spawn_interval": mesa.visualization.Slider(
-        "Spawn time of fireman", 10, 1, 100, 1
+        "Tempo de Spawn Pássaro", 10, 1, 100, 1
     ),
-    "birds_life": mesa.visualization.Slider("Fireman life", 100, 0, 1000, 1),
-    "new_birds_rate": mesa.visualization.Slider("Quantity of new fireman", 1, 0, 15, 1),
+    "birds_life": mesa.visualization.Slider("Vida Pássaro", 100, 0, 1000, 1),
+    "new_birds_rate": mesa.visualization.Slider("Qtd de Novos Pássaros", 1, 0, 15, 1),
 }
 
 

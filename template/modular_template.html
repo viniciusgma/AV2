@@ -16,6 +16,11 @@
 	<!-- This is the Tornado template for the Modular Visualization. The Javascript code opens a WebSocket connection to
 	the server (the port is set via the template). On every step, it receives inputs, one per module, and sends
 	them to the associated function to render. -->
+    <style>
+        body {
+            font-family: "Gill Sans", sans-serif;
+        }
+    </style>
 </head>
 <body>
 
@@ -26,22 +31,28 @@
                 <span class="visually-hidden">Toggle navigation</span>
                 &#x2630;
             </button>
-            <a class="navbar-brand" href="#">{{ model_name }}</a>
-
+            <a class="navbar-brand" href="#">
+                <span style="background: linear-gradient(160deg, #42d392, #E84B3C); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <strong>Forest Fire Av2</strong>
+                </span>
+            </a>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#about" data-bs-title="About" data-bs-content="#about-content" class="nav-link">
-                            About
+                            Sobre o Trabalho
                         </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav ms-auto">
-                    <li id="play-pause" class="nav-item"><button class="btn nav-link"">Start</button>
+                    <li id="play-pause" class="nav-item">
+                        <button class="btn nav-link">Começar</button>
                     </li>
-                    <li id="step" class="nav-item"><button class="btn nav-link">Step</button>
+                    <li id="step" class="nav-item">
+                        <button class="btn nav-link">Step</button>
                     </li>
-                    <li id="reset" class="nav-item"><button class="btn nav-link">Reset</button>
+                    <li id="reset" class="nav-item">
+                        <button class="btn nav-link">Resetar</button>
                     </li>
                 </ul>
             </div>
@@ -52,10 +63,10 @@
         <div class="col-xl-8 col-lg-8 col-md-8 col-9" id="elements">
             <div id="elements-topbar">
                 <div>
-                    <label class="badge bg-primary" for="fps" style="margin-right: 15px">Frames Per Second</label>
+                    <label class="badge bg-primary" for="fps" style="margin-right: 15px">Frames Por Segundo</label>
                     <input id="fps" data-slider-id="fps" type="text">
                 </div>
-                <p>Current Step: <span id="currentStep">0</span>
+                <p>Step Atual: <span id="currentStep">0</span>
                 </p>
             </div>
         </div>
@@ -66,13 +77,16 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">About {{ model_name }}</h4>
+                    <h4 class="modal-title"><strong>Sobre o trabalho Forest Fire</strong></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <strong>Modelo Forest Fire da biblioteca Mesa:</strong><br>
+                        <span style="background: linear-gradient(160deg, #42d392, #E84B3C); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                            <strong>Modelo Forest Fire da biblioteca Mesa:<br></strong></strong>
+                        </span>
+                        <!-- <p style="color:red"><strong>Modelo Forest Fire da biblioteca Mesa:</strong><br></p> -->
                         Lider: Vinicius Glowacki Maciel<br>
                         Equipe de Implementação: Gabriel Ferreira Silva, João Henrique Martins de Lima e Silva, Marcos Abílio Esmeraldo Melo, Richard Elias Soares Viana, Vinicius Glowacki Maciel<br>
                         Equipe de Visualização: Arthur Silva de Vasconcelos, Italo da Silva Santos, Igor Augusto Zwirtes, Jhonatas David de Lima Santos<br>
