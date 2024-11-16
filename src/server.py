@@ -152,7 +152,7 @@ model_params = {
         "Qtd Inicial Bombeiros", 5, 0, 25, 1
     ),
     "new_fireman_rate": mesa.visualization.Slider("Qtd Novos Bombeiros", 1, 0, 15, 1),
-    "burn_rate": mesa.visualization.Slider("Burn rate of the trees", 0.01, 0, 1, 0.001),
+    "burn_rate": mesa.visualization.Slider("Taxa de queima", 0.01, 0, 1, 0.001),
     "fire_propagation_rate": mesa.visualization.Slider(
         "Taxa Propagação do fogo entre Árvores", 0.2, 0, 1, 0.001
     ),
