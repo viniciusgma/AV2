@@ -57,7 +57,7 @@ params = {
     "cloud_quantity": 3,
     "lightning_probability": 0.5,
     "rain_probability": 0.5,
-    "fireman_life": 50,
+    "fireman_life": range(1, 20, 1),
     "fireman_spawn_interval": 10,
     "how_many_initial_fireman": 4,
     "new_fireman_rate": 1,

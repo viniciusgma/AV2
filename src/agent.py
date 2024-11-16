@@ -144,18 +144,6 @@ class Fireman(mesa.Agent):
                     neighbor.condition += 0.3  # Apaga um pouco o fogo
                     self.condition -= 0.1  # Bombeiro perde vida
 
-        # Se não há fogo encontrado, move-se aleatoriamente
-        else:
-            x, y = self.pos
-            new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
-            if (
-                new_pos[0] > 100 or new_pos[0] < 0
-            ):  # esta na beirada nao tem mais fogo, fogo muito baixo
-                new_pos[0] = min(max(0, new_pos[0]), 100)
-            elif new_pos[1] > 100:
-                new_pos[1] = min(max(0, new_pos[1]), 100)
-            self.model.grid.move_agent(self, new_pos)
-
         # Remove se morreu
         if self.condition <= 0:
             self.model.schedule.remove(self)
@@ -165,7 +153,7 @@ class Fireman(mesa.Agent):
 class River(mesa.Agent):
     """
     Representa um rio.
-    Adiciona-se vida as árvoes que estão até trés grids de distancia do rio.
+    Adiciona-se vida as árvoes que a 6 vizinhas.
     """
 
     def __init__(self, pos, model):
@@ -240,30 +228,25 @@ class cloud(mesa.Agent):
                 elif (
                     isinstance(coisa, TreeCell) and coisa.condition < 0.3
                 ):  # Árvore em cinzas
-                    if (
-                        coisa is not None
-                        and hasattr(coisa, "pos")
-                        and coisa.pos is not None
-                    ):
-                        posit = (coisa.pos[0], coisa.pos[1])
-                        print(posit)
-                        # Remove a árvore queimada
-                        self.model.grid.remove_agent(coisa)
-                        # Cria uma nova célula de terra na mesma posição
-                        new_terra = Terra(
-                            pos=coisa.pos,  # Passa a posição diretamente
-                            model=self.model,
-                            burn_rate=coisa.brn,
-                            fire_rate=coisa.fire,
-                            life=coisa.life,
-                        )
-                        # Adiciona a terra no grid
-                        self.model.grid.place_agent(new_terra, posit)
-                        self.model.schedule.add(
-                            new_terra
-                        )  # Adiciona à programação do modelo
-                    else:
-                        print(f"Erro ao processar TreeCell inválido: {coisa}")
+                    # Cria uma nova célula de terra na mesma posição
+                    new_terra = Terra(
+                        pos=coisa.pos,  # Passa a posição diretamente
+                        model=self.model,
+                        burn_rate=coisa.brn,
+                        fire_rate=coisa.fire,
+                        life=coisa.life,
+                    )
+                    posit = coisa.pos
+
+                    # Remove a árvore queimada
+                    self.model.schedule.remove(coisa)
+                    self.model.grid.remove_agent(coisa)
+                    # Adiciona a terra no grid
+                    self.model.grid.place_agent(new_terra, posit)
+                    self.model.schedule.add(
+                        new_terra
+                    )  # Adiciona à programação do modelo
+
                 elif isinstance(
                     coisa, River
                 ):  # coloca agua no rio, aumentando a vida do mesmo
@@ -367,17 +350,20 @@ class Birds(mesa.Agent):
             # Transformação de terra em árvore
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
                 if isinstance(neighbor, Terra):
+                    posit = neighbor.pos
+                    burn = neighbor.burn
+                    fire = neighbor.fire
+                    life = neighbor.life
                     new_tree = TreeCell(
-                        neighbor.pos,
+                        posit,
                         self.model,
-                        neighbor.burn,
-                        neighbor.fire,
-                        neighbor.life,
+                        burn,
+                        fire,
+                        life,
                     )
-                    self.model.grid.place_agent(
-                        new_tree, neighbor.pos
-                    )  # Coloca a árvore
+                    self.model.schedule.remove(neighbor)
                     self.model.grid.remove_agent(neighbor)  # Remove a terra
+                    self.model.grid.place_agent(new_tree, posit)  # Coloca a árvore
                     self.model.schedule.add(
                         new_tree
                     )  # Adiciona a nova árvore ao agendamento

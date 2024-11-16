@@ -2,6 +2,7 @@ import mesa
 import random
 from .agent import TreeCell, Fireman, River, Terra, cloud, Nuvens, Birds
 
+
 class ForestFire(mesa.Model):
     """
     Simple Forest Fire model.
@@ -15,19 +16,19 @@ class ForestFire(mesa.Model):
         how_many_rivers=1,
         fire_focus=5,  # número de focos de incêndio
         fireman_spawn_interval=10,  # Intervalo de tempo para criar novos bombeiros
-        fireman_life = 200, # Quantidade de vida dos bombeiros
+        fireman_life=200,  # Quantidade de vida dos bombeiros
         cloud_quantity=5,  # Novo parâmetro para o número de nuvens
         lightning_probability=0.25,  # Probabilidade de raio
         rain_probability=0.25,  # Probabilidade de chuva
-        how_many_initial_fireman = 5, # Quantidade de bombeiros gerados no início da simulação
-        new_fireman_rate = 1, # Quantidade de novos bombeiros que aparecem a cada intervalo
-        burn_rate = 0.1, # Intensidade do fogo
-        fire_propagation_rate = 0.2, # Velocidade de propagação do fogo
-        tree_life = 1.0, # Quantidade de vida das árvores
-        how_many_birds = 20, # Quantidade inicial de pássaros
-        birds_spawn_interval = 10,  # Intervalo de tempo para criar novos pássaros
-        birds_life = 100, # Quantidade de vida dos pássaro
-        new_birds_rate = 1, # Quantidade de novos pássaros que aparecem a cada intervalo
+        how_many_initial_fireman=5,  # Quantidade de bombeiros gerados no início da simulação
+        new_fireman_rate=1,  # Quantidade de novos bombeiros que aparecem a cada intervalo
+        burn_rate=0.1,  # Intensidade do fogo
+        fire_propagation_rate=0.2,  # Velocidade de propagação do fogo
+        tree_life=1.0,  # Quantidade de vida das árvores
+        how_many_birds=20,  # Quantidade inicial de pássaros
+        birds_spawn_interval=10,  # Intervalo de tempo para criar novos pássaros
+        birds_life=100,  # Quantidade de vida dos pássaro
+        new_birds_rate=1,  # Quantidade de novos pássaros que aparecem a cada intervalo
     ):
         """
         Create a new forest fire model.
@@ -51,10 +52,10 @@ class ForestFire(mesa.Model):
                     TreeCell, lambda c: float(c) > 0.7
                 ),
                 "On Fire": lambda model: model.count_condition(
-                    TreeCell, lambda c: 0 < float(c) <= 0.7
+                    TreeCell, lambda c: 0.3 < float(c) <= 0.7
                 ),
                 "Burned Out": lambda model: model.count_condition(
-                    TreeCell, lambda c: float(c) <= 0
+                    TreeCell, lambda c: 0 <= float(c) <= 0.3
                 ),
                 "Firemen": lambda model: model.count_condition(
                     Fireman, lambda c: float(c) > 0
@@ -62,10 +63,10 @@ class ForestFire(mesa.Model):
                 "Rivers": lambda model: model.count_condition(
                     River, lambda c: float(c) > 0
                 ),
-                "Terra": lambda model: model.count_condition(
-                    Terra, lambda c: True
+                "Terra": lambda model: model.count_condition(Terra, lambda c: True),
+                "Birds": lambda model: model.count_condition(
+                    Birds, lambda c: float(c) > 0
                 ),
-                "Birds": lambda model: model.count_condition(Birds, lambda c: float(c) > 0),
             }
         )
 
@@ -73,14 +74,18 @@ class ForestFire(mesa.Model):
         for contents, (x, y) in self.grid.coord_iter():
             if self.random.random() < tree_density:
                 # Cria uma árvore
-                new_tree = TreeCell((x, y), self, burn_rate, fire_propagation_rate, tree_life)
+                new_tree = TreeCell(
+                    (x, y), self, burn_rate, fire_propagation_rate, tree_life
+                )
                 self.grid.place_agent(new_tree, (x, y))
-                self.schedule.add(new_tree) 
+                self.schedule.add(new_tree)
             else:
-                new_terra = Terra((x, y), self, burn_rate, fire_propagation_rate, tree_life)
+                new_terra = Terra(
+                    (x, y), self, burn_rate, fire_propagation_rate, tree_life
+                )
                 self.grid.place_agent(new_terra, (x, y))
 
-        # Coloca os bombeiros   
+        # Coloca os bombeiros
         center_x, center_y = width // 2, height // 2
         for i in range(how_many_initial_fireman):
             pos = (center_x + i - 1, center_y + i - 1)
@@ -90,7 +95,10 @@ class ForestFire(mesa.Model):
 
         # Coloca os pássaros
         for i in range(how_many_birds):
-            pos = (random.randint(0, self.grid.width - 1), random.randint(0, self.grid.height - 1))
+            pos = (
+                random.randint(0, self.grid.width - 1),
+                random.randint(0, self.grid.height - 1),
+            )
             bird = Birds(pos, self, birds_life, tree_life)
             self.grid.place_agent(bird, pos)
             self.schedule.add(bird)
@@ -120,11 +128,17 @@ class ForestFire(mesa.Model):
 
         # Adiciona os focos de incêndio
         trees_on_fire = random.sample(
-            [agent for agent in self.schedule.agents if isinstance(agent, TreeCell) and agent.condition == tree_life],
+            [
+                agent
+                for agent in self.schedule.agents
+                if isinstance(agent, TreeCell) and agent.condition == tree_life
+            ],
             fire_focus,
         )
         for tree in trees_on_fire:
-            tree.condition = 0.6 * tree.life  # Define condição de "On Fire" para as árvores
+            tree.condition = (
+                0.6 * tree.life
+            )  # Define condição de "On Fire" para as árvores
 
         # Adicionar nuvens com base no valor do slider
         self.create_clouds(cloud_quantity)
@@ -137,15 +151,21 @@ class ForestFire(mesa.Model):
             fireman_spawn_interval  # Intervalo de tempo para criar novos bombeiros
         )
         self.step_count = 0  # Contador de passos para controlar a criação de bombeiros
-        self.fireman_life = fireman_life # Define a quantidade de vida dos bombeiros com base no slider
-        self.new_fireman_rate = new_fireman_rate # Define a quantidade de novos bombeiros que surgem a cada intervalo
+        self.fireman_life = (
+            fireman_life  # Define a quantidade de vida dos bombeiros com base no slider
+        )
+        self.new_fireman_rate = new_fireman_rate  # Define a quantidade de novos bombeiros que surgem a cada intervalo
         self.tree_life = tree_life
 
         # Configurações para criação automática de pássaros
-        self.birds_spawn_interval = birds_spawn_interval  # Intervalo de tempo para criar novos pássaros
+        self.birds_spawn_interval = (
+            birds_spawn_interval  # Intervalo de tempo para criar novos pássaros
+        )
         self.step_count = 0  # Contador de passos para controlar a criação de pássaros
-        self.bird_life = birds_life # Define a quantidade de vida dos pássaros com base no slider
-        self.new_birds_rate = new_birds_rate # Define a quantidade de novos pássaros que surgem a cada intervalo
+        self.bird_life = (
+            birds_life  # Define a quantidade de vida dos pássaros com base no slider
+        )
+        self.new_birds_rate = new_birds_rate  # Define a quantidade de novos pássaros que surgem a cada intervalo
 
     def create_clouds(self, cloud_quantity):
         """
@@ -222,6 +242,6 @@ class ForestFire(mesa.Model):
         count = sum(
             1
             for agent in self.schedule.agents
-            if isinstance(agent, obj_class) and condition_func(agent.condition)
+            if (isinstance(agent, obj_class) and condition_func(agent.condition))
         )
         return count
