@@ -240,13 +240,9 @@ class cloud(mesa.Agent):
 
                     # Adiciona a terra no grid
                     self.model.grid.place_agent(new_terra, posit)
-                    self.model.schedule.add(
-                        new_terra
-                    )  # Adiciona à programação do modelo
 
-                    self.model.kill.append(
-                        coisa
-                    )  # Adiciona a árvore à lista para remover
+                    self.model.grid.remove_agent(neighbor)  # Remove a árvore
+                    self.model.schedule.remove(neighbor)  # Remove a árvore do schedule
 
                 elif isinstance(
                     coisa, River
@@ -364,14 +360,10 @@ class Birds(mesa.Agent):
                     )
 
                     self.model.grid.place_agent(new_tree, posit)  # Coloca a árvore
-                    self.model.schedule.add(
-                        new_tree
-                    )  # Adiciona a nova árvore ao agendamento
+                    self.model.schedule.add(new_tree)  # Adiciona a árvore ao schedule
                     self.condition -= 0.01  # Perde vida ao transformar terra em árvore
 
-                    self.model.kill.append(
-                        neighbor
-                    )  # Adiciona a terra à lista para remover
+                    self.model.grid.remove_agent(neighbor)  # Remove a terra
 
         # Se não há terra, move-se aleatoriamente
         else:

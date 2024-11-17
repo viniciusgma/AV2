@@ -48,22 +48,27 @@ from src.model import ForestFire
         
 """
 
+
 params = {
     "height": 100,
     "width": 100,
-    "tree_density": 0.9,
-    "how_many_rivers": 2,
-    "fire_focus": 3,
-    "cloud_quantity": 3,
-    "lightning_probability": 0.5,
-    "rain_probability": 0.5,
-    "fireman_life": range(1, 20, 1),
-    "fireman_spawn_interval": 10,
-    "how_many_initial_fireman": 4,
-    "new_fireman_rate": 1,
-    "burn_rate": 0.1,
-    "fire_propagation_rate": 0.1,
-    "tree_life": 20,
+    "tree_density": 0.9,  # Default tree density
+    "how_many_rivers": 2,  # Number of rivers
+    "fire_focus": 3,  # Number of fire foci
+    "cloud_quantity": 3,  # Number of clouds
+    "lightning_probability": 0.5,  # Probability of lightning
+    "rain_probability": 0.5,  # Probability of rain
+    "fireman_life": 200,  # Life of a fireman
+    "fireman_spawn_interval": 10,  # Interval for spawning firemen
+    "how_many_initial_fireman": 4,  # Initial number of firemen
+    "new_fireman_rate": 1,  # Number of new firemen spawned
+    "burn_rate": 0.1,  # Burn rate of trees
+    "fire_propagation_rate": 0.1,  # Fire propagation rate
+    "tree_life": 20,  # Life of trees
+    "how_many_birds": 20,  # Number of birds
+    "birds_spawn_interval": range(1, 10, 1),  # Interval for spawning birds
+    "birds_life": 100,  # Life of birds
+    "new_birds_rate": 1,  # Number of new birds spawned
 }
 
 if __name__ == "__main__":
@@ -71,9 +76,9 @@ if __name__ == "__main__":
         ForestFire,
         parameters=params,
         iterations=1,
-        max_steps=10,
+        max_steps=400,
         number_processes=None,
-        data_collection_period=1,
+        data_collection_period=400,
         display_progress=True,
     )
 

@@ -238,14 +238,6 @@ class ForestFire(mesa.Model):
         if self.step_count % self.birds_spawn_interval == 0:
             self.spawn_birds(self.bird_life, self.new_birds_rate, self.tree_life)
 
-        for agent in self.kill:
-            if agent in self.grid:
-                self.grid.remove_agent(agent)
-            if agent in self.schedule.agents:
-                self.schedule.remove(agent)
-
-        self.kill.clear()
-
     def count_condition(self, obj_class, condition_func):
         """Contagem de agentes com base em uma condição"""
         count = sum(
