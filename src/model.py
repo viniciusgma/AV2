@@ -85,6 +85,7 @@ class ForestFire(mesa.Model):
                     (x, y), self, burn_rate, fire_propagation_rate, tree_life
                 )
                 self.grid.place_agent(new_terra, (x, y))
+                self.schedule.add(new_terra)
 
         # Coloca os bombeiros
         center_x, center_y = width // 2, height // 2
