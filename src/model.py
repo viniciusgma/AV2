@@ -218,7 +218,7 @@ class ForestFire(mesa.Model):
             )
             new_birds = Birds((x, y), self, bird_life, tree_life)
             self.grid.place_agent(new_birds, (x, y))
-        self.schedule.add(new_birds)
+            self.schedule.add(new_birds)
 
     def step(self):
         """
