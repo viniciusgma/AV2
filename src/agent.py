@@ -241,8 +241,8 @@ class cloud(mesa.Agent):
                     # Adiciona a terra no grid
                     self.model.grid.place_agent(new_terra, posit)
 
-                    self.model.grid.remove_agent(neighbor)  # Remove a árvore
-                    self.model.schedule.remove(neighbor)  # Remove a árvore do schedule
+                    self.model.grid.remove_agent(coisa)  # Remove a árvore
+                    self.model.schedule.remove(coisa)  # Remove a árvore do schedule
 
                 elif isinstance(
                     coisa, River
