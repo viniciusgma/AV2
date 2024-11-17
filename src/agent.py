@@ -220,7 +220,7 @@ class cloud(mesa.Agent):
                 ):  # arvore normal
                     coisa.condition += 0.1  # Aumenta a condição da árvore
                     self.condition -= 0.1  # Diminui a condição da nuvem
-                if (
+                elif (
                     isinstance(coisa, TreeCell) and coisa.condition > 0.3
                 ):  # arvore em chamas, joga agua para apagar o fogo
                     coisa.condition = 0  # Aumenta a condição da árvore

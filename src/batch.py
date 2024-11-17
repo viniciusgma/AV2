@@ -67,7 +67,7 @@ params = {
     "tree_life": 20,  # Life of trees
     "how_many_birds": 20,  # Number of birds
     "birds_spawn_interval": range(1, 10, 1),  # Interval for spawning birds
-    "birds_life": 100,  # Life of birds
+    "birds_life": range(1, 10, 1),  # Life of birds
     "new_birds_rate": 1,  # Number of new birds spawned
 }
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         ForestFire,
         parameters=params,
         iterations=1,
-        max_steps=400,
+        max_steps=100,
         number_processes=None,
         data_collection_period=400,
         display_progress=True,
