@@ -1,8 +1,14 @@
 # Forest Fire AV2
 
-Forest Fire AV2 se trata de um simulador [Python](https://www.python.org/) de incêndios florestais bidimensionais mais dinâmico, flexível e enriquecido sque implementações mais rudimentares do modelo. A liberdade na escolha de parâmetros permite ao usuário uma abordagem mais detalhada e lúdica da simulação.
+Forest Fire AV2 se trata de um simulador [Python](https://www.python.org/) de incêndios florestais bidimensionais mais dinâmico, flexível e enriquecido sque implementações mais rudimentares do modelo. A liberdade na escolha de parâmetros permite ao usuário uma abordagem mais detalhada e lúdica da simulação. Os requisitos para o uso do modelo são apenas a [Livraria Original do Python](https://docs.python.org/3/library/) e o [FrameworK Mesa](https://mesa.readthedocs.io/stable/).
 
-[Simulação em Forest Fire AV2.webm](https://github.com/user-attachments/assets/278e0798-58af-403e-91d8-7b2e26ec37fc)
+## Download e Instalação
+
+Faça o download da versão mais recente por meio do [Repositório GitHub do Projeto](https://github.com/viniciusgma/AV2.git). Em seguida, por meio do terminal execute o comando `pip install -r requirements.txt` no diretório AV2-main. Após concluir o download dos requisitos, aplique o comando `python3 run.py`. 
+
+## Utilização
+
+Na janela do simulador o usuário tem acesso a diversos parâmetros referentes aos diversos agentes do modelo, sendo eles agentes inertes (terra, ávore e água), agentes móveis (bombeiro, nuvem e pássaro) ou agentes virtuais (fogo). A intensidade dos parâmetros disponíveis para cada um dos agentes é amplamente flexível, gerando dinâmicas únicas de acordo com a configuração escolhida.
 
 ### Executar
 
@@ -19,4 +25,4 @@ Ao executar pre-commit install, sempre, antes de um commit ser confirmado, serã
 
 ### Instalação em Linux
 
-Após fazer o download do repositório, mova-se até o diretório AV2-main através do terminal e execute o comando `pip install -r requirements.txt`. Após concluir o download dos requisitios, aplique o comando 'python3 run.py'.
+Após fazer o download do repositório, mova-se até o diretório AV2-main através do terminal e execute o comando `pip install -r requirements.txt`. Após concluir o download dos requisitos, aplique o comando `python3 run.py`.
