@@ -8,7 +8,7 @@ Faça o download da versão mais recente por meio do [Repositório GitHub do Pro
 
 ## Utilização
 
-Na janela do simulador o usuário tem acesso a diversos parâmetros referentes aos diversos agentes do modelo, sendo eles agentes inertes (terra, ávore e água), agentes móveis (bombeiro, nuvem e pássaro) ou agentes virtuais (fogo). A intensidade dos parâmetros disponíveis para cada um dos agentes é amplamente flexível, gerando dinâmicas únicas de acordo com a configuração escolhida.
+Na janela do simulador o usuário tem acesso a vários parâmetros referentes aos diversos agentes do modelo, sendo eles agentes inertes (terra, ávore e água), agentes móveis (bombeiro, nuvem e pássaro) ou agentes virtuais (fogo). A intensidade dos parâmetros disponíveis para cada um dos agentes é amplamente flexível, gerando dinâmicas únicas de acordo com a configuração escolhida.
 
 ### Executar
 
@@ -22,7 +22,3 @@ Depois de criar um env e executar `pip install -r requirements.txt` :
 `pre-commit run --all-files`
 
 Ao executar pre-commit install, sempre, antes de um commit ser confirmado, serão executados os tests, um linter e um formatador, e o commit só passará se todos retornarem "passed".
-
-### Instalação em Linux
-
-Após fazer o download do repositório, mova-se até o diretório AV2-main através do terminal e execute o comando `pip install -r requirements.txt`. Após concluir o download dos requisitos, aplique o comando `python3 run.py`.
