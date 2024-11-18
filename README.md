@@ -10,7 +10,7 @@ Faça o download da versão mais recente por meio do [Repositório GitHub do Pro
 
 Na janela do simulador o usuário tem acesso a vários parâmetros referentes aos diversos agentes do modelo, sendo eles agentes inertes (terra, árvore e água), agentes móveis (bombeiro, nuvem e pássaro) ou agentes virtuais (fogo). Todos os parâmetros são ajustáveis, e as variadas configurações geram dinâmicas particulares.
 
-[Exposição do Modelo](https://github-production-user-asset-6210df.s3.amazonaws.com/167988419/387339222-278e0798-58af-403e-91d8-7b2e26ec37fc.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20241118%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241118T185018Z&X-Amz-Expires=300&X-Amz-Signature=542084921f9b8aed398c9d33d3b753de839fec072978017c1e837443dcd87390&X-Amz-SignedHeaders=host)
+[![Exposição do modelo](https://i.sstatic.net/Vp2cE.png)](https://youtube.com/shorts/31cD6rWIzMg?feature=share)
 
 ### Executar
 
