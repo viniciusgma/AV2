@@ -198,6 +198,8 @@ class cloud(mesa.Agent):
         # Recupera as probabilidades de raio e chuva do modelo
         self.lightning_probability = model.lightning_probability
         self.rain_probability = model.rain_probability
+        self.fire_intensity = model.fire_intensity  # Intensidade do fogo
+        self.rain_intensity = model.rain_intensity  # Intensidade da chuva
 
     def step(self):
         """
@@ -215,20 +217,17 @@ class cloud(mesa.Agent):
             # Se a probabilidade para chuva for atendida, faz chover
             radius = self.model.grid.get_neighbors(self.pos, moore=True, radius=3)
             for coisa in radius:
-                if (
-                    isinstance(coisa, TreeCell) and coisa.condition > 0.7
-                ):  # arvore normal
-                    coisa.condition += 0.1  # Aumenta a condição da árvore
+                if isinstance(coisa, TreeCell) and coisa.condition > 0.7:
+                    # A chuva aumenta a condição da árvore
+                    coisa.condition += 0.1
                     self.condition -= 0.1  # Diminui a condição da nuvem
-                elif (
-                    isinstance(coisa, TreeCell) and coisa.condition > 0.3
-                ):  # arvore em chamas, joga agua para apagar o fogo
-                    coisa.condition = 0  # Aumenta a condição da árvore
+                elif isinstance(coisa, TreeCell) and coisa.condition > 0.3:
+                    # A chuva apaga o fogo somente se sua intensidade for maior que a do fogo
+                    if self.rain_intensity > self.fire_intensity:
+                        coisa.condition = 0  # Aumenta a condição da árvore
                     self.condition -= 0.1  # Diminui a condição da nuvem
-                elif (
-                    isinstance(coisa, TreeCell) and coisa.condition < 0.3
-                ):  # Árvore em cinzas
-                    # Cria uma nova célula de terra na mesma posição
+                elif isinstance(coisa, TreeCell) and coisa.condition < 0.3:
+                    # Árvore em cinzas, cria uma nova célula de terra
                     new_terra = Terra(
                         pos=coisa.pos,  # Passa a posição diretamente
                         model=self.model,
@@ -245,9 +244,7 @@ class cloud(mesa.Agent):
                     self.model.grid.remove_agent(coisa)  # Remove a árvore
                     self.model.schedule.remove(coisa)  # Remove a árvore do schedule
 
-                elif isinstance(
-                    coisa, River
-                ):  # coloca agua no rio, aumentando a vida do mesmo
+                elif isinstance(coisa, River):
                     coisa.condition += 1
 
 
