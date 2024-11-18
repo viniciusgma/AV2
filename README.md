@@ -2,7 +2,7 @@
 
 Forest Fire AV2 se trata de um simulador [Python](https://www.python.org/) de incêndios florestais bidimensionais mais dinâmico, flexível e enriquecido se comparado à implementações mais rudimentares do modelo. A liberdade na escolha de parâmetros permite ao usuário uma abordagem mais detalhada
 
-![Simulação do Forest Fire AV2]([https://imgur.com/a/5GV1zRd](https://imgur.com/jHcnBKb))
+![Simulação do Forest Fire AV2]([[https://imgur.com/a/5GV1zRd](https://imgur.com/jHcnBKb)](https://github.com/viniciusgma/AV2/issues/3#issue-2669436043))
 ### Executar
 
 dentro da pasta AV2 executar comando `mesa runserver`
