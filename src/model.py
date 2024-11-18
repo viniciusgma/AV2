@@ -207,7 +207,7 @@ class ForestFire(mesa.Model):
             )
             new_fireman = Fireman((x, y), self, fireman_life, tree_life)
             self.grid.place_agent(new_fireman, (x, y))
-        self.schedule.add(new_fireman)
+            self.schedule.add(new_fireman)
 
     def spawn_birds(self, bird_life, new_birds_rate, tree_life):
         """Cria um novo pássaro em uma posição aleatória da grade."""
