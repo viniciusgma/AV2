@@ -1,5 +1,0 @@
-mesa==2.4.0
-ruff
-black
-pytest
-pre-commit
