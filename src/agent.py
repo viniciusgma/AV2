@@ -370,7 +370,13 @@ class Birds(mesa.Agent):
         # Se não há terra, move-se aleatoriamente
         else:
             x, y = self.pos
-            new_pos = (x + random.randint(-1, 1), y + random.randint(-1, 1))
+            new_x = x + random.randint(-1, 1)
+            new_y = y + random.randint(-1, 1)
+
+            new_x = new_x if 0 <= new_x < self.model.width else x
+            new_y = new_y if 0 <= new_y < self.model.height else y
+
+            new_pos = (new_x, new_y)
             self.model.grid.move_agent(self, new_pos)
 
         # Remove o pássaro se ele morreu
