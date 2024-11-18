@@ -27,8 +27,10 @@ class ForestFire(mesa.Model):
         tree_life=1.0,  # Quantidade de vida das árvores
         how_many_birds=20,  # Quantidade inicial de pássaros
         birds_spawn_interval=10,  # Intervalo de tempo para criar novos pássaros
-        birds_life=100,  # Quantidade de vida dos pássaro
-        new_birds_rate=1,  # Quantidade de novos pássaros que aparecem a cada intervalo
+        birds_life=100,  # Quantidade de vida dos pássaros
+        new_birds_rate=1,  # Quantidade de novos pássaros que surgem a cada intervalo
+        fire_intensity=1.0,  # Intensidade do fogo
+        rain_intensity=1.0,  # Intensidade da chuva
     ):
         """
         Create a new forest fire model.
@@ -42,7 +44,9 @@ class ForestFire(mesa.Model):
         self.schedule = mesa.time.RandomActivation(self)
         self.grid = mesa.space.MultiGrid(width, height, torus=False)
 
-        # Configura as probabilidades de raio e chuva
+        # Configurações de intensidade de fogo e chuva
+        self.fire_intensity = fire_intensity
+        self.rain_intensity = rain_intensity
         self.lightning_probability = lightning_probability
         self.rain_probability = rain_probability
         self.kill = []

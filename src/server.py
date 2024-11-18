@@ -163,6 +163,13 @@ model_params = {
     ),
     "birds_life": mesa.visualization.Slider("Vida Pássaro", 100, 0, 1000, 1),
     "new_birds_rate": mesa.visualization.Slider("Qtd de Novos Pássaros", 1, 0, 15, 1),
+
+    "fire_intensity":mesa.visualization.Slider(
+            "Intensidade do fogo", 0, 2, 1.0
+        ), 
+    "rain_intensity":mesa.visualization.Slider(
+            "Intensidade da chuva", 0, 2, 1.0
+        )
 }
 
 
