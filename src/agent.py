@@ -254,8 +254,8 @@ class Nuvens(mesa.agent.AgentSet):
 
     def do_step(self):
         # Definindo o ponto inicial para a nuvem
-        x = random.randint(3, self.model.grid.width - 8)
-        y = random.randint(3, self.model.grid.height - 8)
+        x = random.randint(3, self.model.grid.width - 7)
+        y = random.randint(3, self.model.grid.height - 7)
 
         # Definindo as posições ao redor da nuvem
         grid4x4 = [(x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]

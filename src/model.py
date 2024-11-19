@@ -53,7 +53,7 @@ class ForestFire(mesa.Model):
 
         self.datacollector = mesa.DataCollector(
             {
-                "Fine": lambda model: model.count_condition(
+                "Bem": lambda model: model.count_condition(
                     TreeCell, lambda c: float(c) > 0.7
                 ),
                 "On Fire": lambda model: model.count_condition(

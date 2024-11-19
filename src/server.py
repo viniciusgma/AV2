@@ -6,7 +6,7 @@ from pathlib import Path
 
 # Dicionário de cores para os diferentes estados dos agentes
 COLORS = {
-    "Fine": "#00AA00",  # Verde para árvore saudável
+    "Bem": "#00AA00",  # Verde para árvore saudável
     "On Fire": "#FF6F6F",  # Vermelho claro para árvore pegando fogo
     "Burned Out": "#000000",  # Preto para árvore queimada
     "River": "#ADD8E6",  # Azul claro para rio
@@ -67,7 +67,7 @@ def multi_agent_portrayal(agent):
 
     # Representação do agente TreeCell
     elif isinstance(agent, TreeCell):
-        condition = agent.condition
+        condition = agent.condition / agent.life
         portrayal["Color"] = get_tree_color(condition)  # Use a função get_tree_color
         portrayal["Layer"] = 1
 
@@ -163,10 +163,9 @@ model_params = {
     ),
     "birds_life": mesa.visualization.Slider("Vida Pássaro", 100, 0, 1000, 1),
     "new_birds_rate": mesa.visualization.Slider("Qtd de Novos Pássaros", 1, 0, 15, 1),
-
-      "fire_intensity": mesa.visualization.Slider(
+    "fire_intensity": mesa.visualization.Slider(
         "Intensidade do Fogo", 0.1, 0.0, 1.0, 0.05
-    ), 
+    ),
     "rain_intensity": mesa.visualization.Slider(
         "Intensidade da Chuva", 0.1, 0.0, 1.0, 0.05
     ),
