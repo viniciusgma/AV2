@@ -6,14 +6,14 @@ from pathlib import Path
 
 # Dicionário de cores para os diferentes estados dos agentes
 COLORS = {
-    "Fine": "#00AA00",  # Verde para árvore saudável
-    "On Fire": "#FF6F6F",  # Vermelho claro para árvore pegando fogo
-    "Burned Out": "#000000",  # Preto para árvore queimada
-    "River": "#ADD8E6",  # Azul claro para rio
-    "Fireman": "#FFFF00",  # Amarelo para bombeiro
-    "cloud": "#FFFFFF",  # Branco para nuvem
+    "Árvore Bem": "#00AA00",  # Verde para árvore saudável
+    "Pegando Fogo": "#FF6F6F",  # Vermelho claro para árvore pegando fogo
+    "Em Cinzas": "#000000",  # Preto para árvore queimada
+    "Rio": "#ADD8E6",  # Azul claro para rio
+    "Bombeiros": "#FFFF00",  # Amarelo para bombeiro
+    "Nuvens": "#F8F8FF",  # Branco para nuvem
     "Terra": "#E5AA70",  # Cor de terra
-    "Birds": "#0000FF",  # Azul escuro para pássaro
+    "Pássaros": "#0000FF",  # Azul escuro para pássaro
 }
 
 
@@ -74,26 +74,24 @@ def multi_agent_portrayal(agent):
     # Representação do agente Fireman
     elif isinstance(agent, Fireman):
         portrayal["Color"] = (
-            COLORS["Fireman"] if float(agent.condition) > 0 else "#000000"
+            COLORS["Bombeiros"] if float(agent.condition) > 0 else "#000000"
         )
         portrayal["Layer"] = 2
 
     # Representação do agente River
     elif isinstance(agent, River):
-        portrayal["Color"] = (
-            COLORS["River"] if float(agent.condition) > 0 else "#000000"
-        )
+        portrayal["Color"] = COLORS["Rio"] if float(agent.condition) > 0 else "#000000"
         portrayal["Layer"] = 3
 
     # Representação do agente Cloud
     elif isinstance(agent, cloud):
-        portrayal["Color"] = COLORS["cloud"]
+        portrayal["Color"] = COLORS["Nuvens"]
         portrayal["Layer"] = 4
 
     # Representação do agente Bird
     elif isinstance(agent, Birds):
         portrayal["Color"] = (
-            COLORS["Birds"] if float(agent.condition) > 0 else "#000000"
+            COLORS["Pássaros"] if float(agent.condition) > 0 else "#000000"
         )
         portrayal["Layer"] = 4
 
@@ -163,10 +161,9 @@ model_params = {
     ),
     "birds_life": mesa.visualization.Slider("Vida Pássaro", 100, 0, 1000, 1),
     "new_birds_rate": mesa.visualization.Slider("Qtd de Novos Pássaros", 1, 0, 15, 1),
-
-      "fire_intensity": mesa.visualization.Slider(
+    "fire_intensity": mesa.visualization.Slider(
         "Intensidade do Fogo", 0.1, 0.0, 1.0, 0.05
-    ), 
+    ),
     "rain_intensity": mesa.visualization.Slider(
         "Intensidade da Chuva", 0.1, 0.0, 1.0, 0.05
     ),
