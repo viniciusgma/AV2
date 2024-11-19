@@ -53,23 +53,23 @@ class ForestFire(mesa.Model):
 
         self.datacollector = mesa.DataCollector(
             {
-                "Bem": lambda model: model.count_condition(
+                "Árvore Bem": lambda model: model.count_condition(
                     TreeCell, lambda c: float(c) > 0.7
                 ),
-                "On Fire": lambda model: model.count_condition(
+                "Pegando Fogo": lambda model: model.count_condition(
                     TreeCell, lambda c: 0.3 < float(c) <= 0.7
                 ),
-                "Burned Out": lambda model: model.count_condition(
+                "Em Cinzas": lambda model: model.count_condition(
                     TreeCell, lambda c: 0 <= float(c) <= 0.3
                 ),
-                "Firemen": lambda model: model.count_condition(
+                "Bombeiros": lambda model: model.count_condition(
                     Fireman, lambda c: float(c) > 0
                 ),
-                "Rivers": lambda model: model.count_condition(
+                "Rio": lambda model: model.count_condition(
                     River, lambda c: float(c) > 0
                 ),
                 "Terra": lambda model: model.count_condition(Terra, lambda c: True),
-                "Birds": lambda model: model.count_condition(
+                "Pássaros": lambda model: model.count_condition(
                     Birds, lambda c: float(c) > 0
                 ),
             }
