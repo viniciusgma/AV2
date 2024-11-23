@@ -21,6 +21,8 @@ A Nuvem é um agente que pode surgir em qualquer ponto do grid, composto por qua
   - Raios: WIP
  ### Bombeiro
 Agente dinâmico em constante movimento, movendo-se até o fogo mais próximo. Caso não haja fogo, seu movimento é aleatório. Quando uma árvore  próxima possui entre 30% e 70% de vida ele recupera 0.3 da condição da árvore ao passo que perde 0.1 da própria vida.
+###Pássaro
+	Agente dinâmico em constante movimento, movendo-se em direção ao bloco de terra mais próximo. Caso não haja terra, seu movimento é aleatório. O agente atua semeando árvores em blocos de terra ociosos, com perda de 0.1 de vitalidade para cada unidade de terra semeada. O agente sofre 0.8 de dano ao passar pelo fogo.
 
 ## Sliders
 São os valores que podem ser manipulados pelo usuário antes que do começo da simulação mudando o estado e interações dentro do grid
