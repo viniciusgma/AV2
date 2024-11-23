@@ -18,46 +18,46 @@ A Nuvem é um agente que pode surgir em qualquer ponto do grid, composto por qua
     - Apaga o fogo da árvore se a intensidade da chuva for maior que a do fogo.  
       - Ambos os processos reduzem a vida da nuvem em -0.1.
     - Substitui árvores queimadas por terra.
-  - Raios: WIP
+  - Raios: faz com a arvore pegue fogo.
  ### Bombeiro
 Agente dinâmico em constante movimento, movendo-se até o fogo mais próximo. Caso não haja fogo, seu movimento é aleatório. Quando uma árvore  próxima possui entre 30% e 70% de vida ele recupera 0.3 da condição da árvore ao passo que perde 0.1 da própria vida.
-###Pássaro
-	Agente dinâmico em constante movimento, movendo-se em direção ao bloco de terra mais próximo. Caso não haja terra, seu movimento é aleatório. O agente atua semeando árvores em blocos de terra ociosos, com perda de 0.1 de vitalidade para cada unidade de terra semeada. O agente sofre 0.8 de dano ao passar pelo fogo.
+### Pássaro
+Agente dinâmico em constante movimento, movendo-se em direção ao bloco de terra mais próximo. Caso não haja terra, seu movimento é aleatório. O agente atua semeando árvores em blocos de terra ociosos, com perda de 0.1 de vitalidade para cada unidade de terra semeada. O agente sofre 0.8 de dano ao passar pelo fogo.
 
 ## Sliders
-São os valores que podem ser manipulados pelo usuário antes que do começo da simulação mudando o estado e interações dentro do grid
+São os valores que podem ser manipulados pelo usuário antes que do começo da simulação mudando o estado e interações dentro do grid.
 
 ### Sliders de estado inicial
-Definem variáveis relacionadas ao grid antes do começo da simulação
-- **Densidade de Árvores**: define quanto da área total do grid será preenchida de forma a completar a mesma proporção dada
-- **Qtd de rios**: define quantos rios, faixas de água, terá no total da simulação
-- **Focos de incêndio**: determina a quantidade de árvores que estão pegando fogo para começar a simulação, que são escolhidas aleatoriamente
+Definem variáveis relacionadas ao grid antes do começo da simulação.
+- **Densidade de Árvores**: define quanto da área total do grid será preenchida de forma a completar a mesma proporção dada.
+- **Qtd de rios**: define quantos rios, faixas de água, terá no total da simulação.
+- **Focos de incêndio**: determina a quantidade de árvores que estão pegando fogo para começar a simulação, que são escolhidas aleatoriamente.
 
 ### Sliders da nuvem
-Definem variáveis relacionadas a nuvem e suas interações durante os passos
+Definem variáveis relacionadas a nuvem e suas interações durante os passos.
 - **Qtd de nuvem**: define quantidade de nuvens que constantemente estará na simulação
-- **Probabilidade de Raio**: define a probabilidade de um raio acontecer na posição da nuvem
-- **Probabilidadede chuva**: define  a probabilidade da chuva  acontecer na posição da nuvem
-- **intesidade da chuva**: defiena a intensidade de todas as chuvas do modelo
+- **Probabilidade de Raio**: define a probabilidade de um raio acontecer na posição da nuvem.
+- **Probabilidadede chuva**: define  a probabilidade da chuva  acontecer na posição da nuvem.
+- **intesidade da chuva**: defiena a intensidade de todas as chuvas do modelo.
   
 ### Sliders dos Bombeiros
-Definem variáveis relacionadas aos bombeiros
-- **Vida do Bombeiros**: define a vida inicial do bombeiro ao spawnar 
-- **Intervalo Spawn Bombeiro**: define a quantidade de passos da simulação entre os spawns de bombeiros
-- **Qtd Inicial de Bombeiros**: define quantos bombeiros vão estar no começo da simulação
-- **Qtd de novos Bombeiros**: define quantos bonbeiros vão spawar a cada intevalo de spawn
+Definem variáveis relacionadas aos bombeiros.
+- **Vida do Bombeiros**: define a vida inicial do bombeiro ao spawnar.
+- **Intervalo Spawn Bombeiro**: define a quantidade de passos da simulação entre os spawns de bombeiros.
+- **Qtd Inicial de Bombeiros**: define quantos bombeiros vão estar no começo da simulação.
+- **Qtd de novos Bombeiros**: define quantos bonbeiros vão spawar a cada intevalo de spawn.
   
 ### Slider do fogo
-Definem variáveis relacionadas ao fogo e suas interações durante os passos
+Definem variáveis relacionadas ao fogo e suas interações durante os passos.
 - **Taxa de queima**:
 - **Taxa Propagação do fogo entre Árvores**:
 - **Vida das Árvores**:
 - **Intensidade do Fogo**:
 
 ### Sliders dos passaros
-Definem variáveis relacionadas aos passaros 
-- **Qtd de Pássaro**: define quantos passaros vão estar no começo da simulação
-- **Tempo de Spawn Pássaro**: define a quantidade de passos da simulação entre os spawns de passaros
-- **Vida Pássaro**: define a vida inicial do passaro ao spawnar 
-- **Qtd de Novos Pássaros**: define quantos passaros vão spawar a cada tempo de spawn
+Definem variáveis relacionadas aos passaros.
+- **Qtd de Pássaro**: define quantos passaros vão estar no começo da simulação.
+- **Tempo de Spawn Pássaro**: define a quantidade de passos da simulação entre os spawns de passaros.
+- **Vida Pássaro**: define a vida inicial do passaro ao spawnar.
+- **Qtd de Novos Pássaros**: define quantos passaros vão spawar a cada tempo de spawn.
 
