@@ -125,39 +125,12 @@ class Fireman(mesa.Agent):
         if target_pos:
             x, y = self.pos
             tx, ty = target_pos
-    
-            # Movimenta-se em direção ao fogo e desvia do rio
-            
+
+            # Movimenta-se em direção ao fogo
             new_pos = (
-                x,
-                y 
+                x + (1 if tx > x else -1 if tx < x else 0),
+                y + (1 if ty > y else -1 if ty < y else 0),
             )
-            
-            di = [[+1,+1],[+1,0],[+1,-1], [0, +1], [0, -1], [-1, +1], [-1, 0], [-1, -1]]
-    
-            d = []
-            
-            for direc in di:
-                
-                nx, ny = x + direc[0], y + direc[1]
-                ag = self.model.grid.get_cell_list_contents([(nx, ny)])
-                
-                add = True
-                
-                for a in ag:
-                    if isinstance(a, River):
-                       add = False
-                
-                if add:
-                    d.append([(tx - nx)*2+(ty - ny)*2, nx, ny])
-                    
-            d.sort()
-            
-            if d:      
-                new_pos = (
-                    d[0][1],
-                    d[0][2],
-                )
 
             self.model.grid.move_agent(self, new_pos)
 
