@@ -2,7 +2,7 @@
 
 Forest Fire AV2 é um simulador [Python](https://www.python.org/) de incêndios florestais em um ambiente bidimensional, sendo mais dinâmico, flexível e enriquecido que implementações mais rudimentares do modelo. A liberdade na escolha de parâmetros permite ao usuário uma abordagem mais detalhada e lúdica da simulação, permitindo uma análise visual em tempo real do comportamento do fogo. Os requisitos para o uso do modelo são apenas a [Livraria Original do Python](https://docs.python.org/3/library/) e o [Framework Mesa](https://mesa.readthedocs.io/stable/).
 
-## Download
+### Download
 
 Faça o download da versão mais recente por meio do [Repositório GitHub do Projeto](https://github.com/viniciusgma/AV2.git). 
 
